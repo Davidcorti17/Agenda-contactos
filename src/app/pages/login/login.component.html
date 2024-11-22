@@ -1,0 +1,12 @@
+<form #loginForm="ngForm" (ngSubmit)="login(loginForm.value)">
+  <mat-form-field>
+    <mat-label>Nombre de usuario</mat-label>
+    <input matInput type="text" name="username" id="username" required="true" [minLength]="4" ngModel [autocomplete]="'username'">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Contraseña</mat-label>
+    <input matInput type="password" name="password" id="password" required="true" [minLength]="8" ngModel [autocomplete]="'current-password'">
+  </mat-form-field>
+  <button mat-button [disabled]="!loginForm.valid">Login</button>
+  <p>¿No tenés cuenta? <a [routerLink]="['/register']">Registrate</a>.</p>
+</form>
