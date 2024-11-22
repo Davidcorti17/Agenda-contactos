@@ -1,4 +1,4 @@
-import { effect, inject, Injectable, resource, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, resource, ResourceRef, signal } from '@angular/core';
 import { LoginData, LoginRequestData } from '../interfaces/login';
 import { ApiService } from './api.service';
 import { RegisterData } from '../interfaces/register';
@@ -23,50 +23,64 @@ export class AuthService extends ApiService {
     this.token.set(tokenLocalstorage || null);
   }
 
-  /** Obtiene información del usuario a partir del token */
-  user = resource({
-    request: () => (this.token()),
-    loader: async (request)=> {
-      if(!this.token()) return null;
-      const tokenDecodificado = decodeToken(this.token()!);
-      if(!tokenDecodificado.exp || new Date(tokenDecodificado.exp) > new Date()){
-        this.logout();
-      }
-      //Devuelvo el user según el claim
-      const user:User = {
-        username: "Nombre",
-        email: 'Correo',
-        role: tokenDecodificado.role
-      }
-      return user;
-      //Obtengo los datos del usuario pidiendo al back la información de mi usuario por mi ID
-      if (tokenDecodificado.sub){
-        const resUser = await this.userService.getById(tokenDecodificado.sub);
-        if(resUser.success && resUser.data){
-          return resUser.data
-        }
-      }
-      // console.log(tokenDecodificado)
-      return null
-      //Obtengo los datos del usuario pidiendo al back la información de mi usuario por mi token
-      // const res = await this.get("me");
-      // if(res && res.ok) {
-      //   const resJson:MeRequest = res.json()
-      //   return resJson
-      // }
-      // return null
-    },
+  /** Obtiene información del usuario a partir del claim */
+  user = computed<User|null>(()=> {
+    if(!this.token()) return null;
+    const tokenDecodificado = decodeToken(this.token()!);
+    // Si el token está vencido hecho al usuario y borro todo.
+    if(!tokenDecodificado.exp || new Date(tokenDecodificado.exp) > new Date()){
+      this.logout();
+      return null;
+    }
+    const user:User = {
+      username: "Nombre",
+      email: 'Correo',
+      role: tokenDecodificado.role
+    }
+    return user;
+  })
 
-  });
+  /** Obtiene información del usuario a partir del token */
+  // user:ResourceRef<User | null> = resource({
+  //   request: () => (this.token()),
+  //   loader: async (request)=> {
+  //     if(!this.token()) return null;
+  //     const tokenDecodificado = decodeToken(this.token()!);
+  //     if(!tokenDecodificado.exp || new Date(tokenDecodificado.exp) > new Date()){
+  //       this.logout();
+  //       return null;
+  //     }
+  //     return user;
+  //     //Obtengo los datos del usuario pidiendo al back la información de mi usuario por mi ID
+  //     if (tokenDecodificado.sub){
+  //       const resUser = await this.userService.getById(tokenDecodificado.sub);
+  //       if(resUser.success && resUser.data){
+  //         return resUser.data
+  //       }
+  //     }
+  //     // console.log(tokenDecodificado)
+  //     return null
+  //     //Obtengo los datos del usuario pidiendo al back la información de mi usuario por mi token
+  //     // const res = await this.get("me");
+  //     // if(res && res.ok) {
+  //     //   const resJson:MeRequest = res.json()
+  //     //   return resJson
+  //     // }
+  //     // return null
+  //   },
+  // });
+
+  /** El token guardado en memoria de la aplicación */
   token = signal<string | null>(null);
 
+  /** Actualiza el token en localstorage según lo que pasa en la app */
   guardarTokenLocalstorage = effect(()=> 
     this.token() ? 
     localStorage.setItem("token",this.token()!) :
     localStorage.removeItem("token")
   );
 
-  /** Intenta iniciar sesión */ //authentication
+  /** Intenta iniciar sesión */
   async login(loginData:LoginData):Promise<ResponseData>{
     const res = await this.post("authentication/authenticate",loginData)
     if(!res) return {

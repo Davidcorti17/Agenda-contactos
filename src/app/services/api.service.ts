@@ -11,7 +11,7 @@ export class ApiService {
   async get(URI:string){
     const token = localStorage.getItem("token");
     let headers:HeadersInit = {}
-    if(token) headers = {...headers, authentication: "Bearer "+token };
+    if(token) headers = {...headers, Authorization: "Bearer "+token };
     return await fetch(environment.API_URL+URI,{
       headers
     })
@@ -21,7 +21,7 @@ export class ApiService {
     if(typeof body !== "object" && typeof body !== "string") return;
     const token = localStorage.getItem("token");
     let headers:HeadersInit = { "content-type" : "Application/json" }
-    if(token) headers = {...headers, authentication: "Bearer "+token };
+    if(token) headers = {...headers, Authorization: "Bearer "+token };
     return await fetch(environment.API_URL+URI,{
       method: "POST",
       headers,
@@ -33,7 +33,7 @@ export class ApiService {
     if(typeof body !== "object" && typeof body !== "string") return;
     const token = localStorage.getItem("token");
     let headers:HeadersInit = { "content-type" : "Application/json" }
-    if(token) headers = {...headers, authentication: "Bearer "+token };
+    if(token) headers = {...headers, Authorization: "Bearer "+token };
     return await fetch(environment.API_URL+URI,{
       method: "PUT",
       headers,
@@ -44,7 +44,7 @@ export class ApiService {
   async delete(URI:string){
     const token = localStorage.getItem("token");
     let headers:HeadersInit = {}
-    if(token) headers = {...headers, authentication: "Bearer "+token };
+    if(token) headers = {...headers, Authorization: "Bearer "+token };
     return await fetch(environment.API_URL+URI,{
       method: "DELETE",
       headers,

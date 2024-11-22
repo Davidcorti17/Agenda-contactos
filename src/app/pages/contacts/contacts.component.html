@@ -1,2 +1,17 @@
-<p>contactos works!</p>
+<h1>Contactos</h1>
+
+@if(contactsService.contacts.isLoading()){
+  <p>Cargando</p>
+} @else {
+
+  @for (contact of contactsService.contacts.value(); track contact.id) {
+    <div>
+      <p>{{contact.firstName}}</p>
+      <p>{{contact.address}}</p>
+    </div>
+  } @empty {
+    <p>No hay contactos</p>
+  }
+}
 <button (click)="authService.logout()">Cerrar sesión</button>
+<button (click)="reload()">reload</button>

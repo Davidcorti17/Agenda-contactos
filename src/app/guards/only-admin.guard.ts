@@ -4,7 +4,7 @@ import { AuthService } from '../services/auth.service';
 
 export const onlyAdminGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService)
-  if (authService.user.value()?.role === 'Admin') return true;
+  if (authService.user()?.role === 'Admin') return true;
   const router = inject(Router)
   const urlTree: UrlTree = router.parseUrl('/login');
   return new RedirectCommand(urlTree, { skipLocationChange: true });
