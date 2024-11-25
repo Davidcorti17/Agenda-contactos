@@ -1,17 +1,15 @@
 <h1>Contactos</h1>
 
+@for (contact of contactsService.contacts.value(); track contact.id) {
+  <div [routerLink]="[contact.id]" >
+    <p>{{contact.firstName}}</p>
+    <p>{{contact.address}}</p>
+  </div>
+} @empty {
+  <p>No hay contactos</p>
+}
 @if(contactsService.contacts.isLoading()){
   <p>Cargando</p>
-} @else {
-
-  @for (contact of contactsService.contacts.value(); track contact.id) {
-    <div>
-      <p>{{contact.firstName}}</p>
-      <p>{{contact.address}}</p>
-    </div>
-  } @empty {
-    <p>No hay contactos</p>
-  }
 }
+<a [routerLink]="['/contacts/new']">Agregar</a>
 <button (click)="authService.logout()">Cerrar sesión</button>
-<button (click)="reload()">reload</button>

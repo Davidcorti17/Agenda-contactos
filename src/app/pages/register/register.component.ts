@@ -3,9 +3,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { RegisterData } from '../../interfaces/register';
 import { AuthService } from '../../services/auth.service';
+import { SnackBarService } from '../../snack-bar.service';
 
 @Component({
   selector: 'app-register',
@@ -15,6 +16,8 @@ import { AuthService } from '../../services/auth.service';
 })
 export class RegisterComponent {
   authService = inject(AuthService);
+  snackBarService = inject(SnackBarService)
+  router = inject(Router);
 
   async register(){
     const registerData : RegisterData = {
@@ -22,7 +25,13 @@ export class RegisterComponent {
       password: '',
       email: ''
     }
-    const register = await this.authService.register(registerData)
+    const register = await this.authService.register(registerData);
+    if(!register.success){
+      this.snackBarService.openSnackbarError(register.message);
+    } else {
+      this.snackBarService.openSnackbarSuccess(register.message);
+      this.router.navigate(["/login"])
+    }
   }
 
 }

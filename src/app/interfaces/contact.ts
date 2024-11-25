@@ -15,11 +15,12 @@ export interface ContactNew {
 }
 
 export interface ContactRequest {
-  FirstName: string;
-  LastName: string;
-  Address?: string;
-  Email: string;
-  Image?: string;
-  Number: string;
-  Company?: string;
+  id: string;
+  firstName: string;
+  lastName: string;
+  address?: string;
+  email: string;
+  image?: string;
+  number: string;
+  company?: string;
 }

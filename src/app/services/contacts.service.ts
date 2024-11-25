@@ -1,14 +1,17 @@
 import { inject, Injectable, resource, ResourceRef, signal } from '@angular/core';
 import { ApiService } from './api.service';
-import { Contact } from '../interfaces/contact';
+import { Contact, ContactRequest } from '../interfaces/contact';
 import { ResponseData } from '../interfaces/responses';
 import { AuthService } from './auth.service';
+import { SnackBarService } from '../snack-bar.service';
+import { contactRequestToContact } from '../utils/contactMap';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContactsService extends ApiService {
-  authService = inject(AuthService)
+  authService = inject(AuthService);
+  snackbarService = inject(SnackBarService);
   readonly resource = "Contact";
 
   // contacts = signal<Contact[]>([]);
@@ -18,6 +21,7 @@ export class ContactsService extends ApiService {
       if(!request.token) return [];
       const res = await this.getAll()
       if(res.success && res.data) return res.data;
+      this.snackbarService.openSnackbarError(res.message);
       return [];
     }
   })
@@ -30,12 +34,12 @@ export class ContactsService extends ApiService {
         message: "Error buscando contactos",
       }
     }
-    const resJson = await res.json();
+    const resJson:ContactRequest[] = await res.json();
     if(resJson) {
       return {
         success: true,
         message: "Contactos encontrados",
-        data: resJson
+        data: resJson.map(contactRequest => contactRequestToContact(contactRequest)) 
       }
     }
     return {
@@ -60,12 +64,12 @@ export class ContactsService extends ApiService {
         message: "Contacto no encontrado",
       }
     }
-    const resJson = await res.json();
+    const resJson:ContactRequest = await res.json();
     if(resJson) {
       return {
         success: true,
         message: "Contacto encontrado",
-        data: resJson
+        data: contactRequestToContact(resJson)
       }
     }
     return {

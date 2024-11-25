@@ -1,0 +1,10 @@
+<img ngSrc="{{contact()?.imageUrl || 'images/placeholder_contact.jpeg'}}"  width="200" height="200">
+<p>{{contact()?.firstName | titlecase}}</p>
+<p>{{contact()?.lastName  | titlecase}}</p>
+<a href="tel:{{contact()?.phone}}">{{contact()?.phone}}</a>
+<a href="https://maps.google.com/{{contact()?.address}}">{{contact()?.address}}</a>
+<a href="mailto:{{contact()?.email}}">{{contact()?.email}}</a>
+
+<button [routerLink]="['edit']">Edit</button>
+<p>{{contact() | json}}</p>
+

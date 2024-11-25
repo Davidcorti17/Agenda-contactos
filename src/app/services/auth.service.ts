@@ -87,9 +87,9 @@ export class AuthService extends ApiService {
       success: false,
       message: "Error de conexión"
     }
-    if(res.status === 503) return{
+    if(res.status === 503 || res.status === 401) return{
       success: false,
-      message: "Error de autenticación"
+      message: "Usuario o contraseña incorrectos"
     }
     if(res.ok) {
       const token = await res.text();

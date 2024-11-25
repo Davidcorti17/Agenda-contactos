@@ -9,8 +9,10 @@ import { ResponseData } from '../interfaces/responses';
 })
 export class UsersService extends ApiService {
 
+  readonly resource = "Contact"
+
   async getAll():Promise<ResponseData>{
-    this.get("Contact")
+    this.get(this.resource);
     return {
       success: false,
       message: "Error indeterminado"
@@ -18,7 +20,7 @@ export class UsersService extends ApiService {
   }
 
   async getById(userId:string):Promise<ResponseData>{
-    this.get(`Contact/${userId}`)
+    this.get(`${this.resource}/${userId}`);
     return {
       success: false,
       message: "Error indeterminado"
@@ -27,7 +29,7 @@ export class UsersService extends ApiService {
 
   async updateUser(user:User):Promise<ResponseData>{
     const userRequest: PostUserRequest = userToUserRequest(user);
-    this.put("Contact",user)
+    this.put(this.resource,user)
     return {
       success: false,
       message: "Error indeterminado"
@@ -35,7 +37,7 @@ export class UsersService extends ApiService {
   }
 
   async deleteUser(userId:string):Promise<ResponseData>{
-    this.delete(`Contact/${userId}`)
+    this.delete(`${this.resource}/${userId}`);
     return {
       success: false,
       message: "Error indeterminado"
