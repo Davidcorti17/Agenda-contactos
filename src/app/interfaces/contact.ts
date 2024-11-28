@@ -24,3 +24,9 @@ export interface ContactRequest {
   number: string;
   company?: string;
 }
+
+export const CONTACTO_VACIO:ContactNew = {
+  firstName: "",
+  lastName: "",
+  phone: ""
+}

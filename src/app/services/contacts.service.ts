@@ -1,6 +1,6 @@
 import { inject, Injectable, resource, ResourceRef, signal } from '@angular/core';
 import { ApiService } from './api.service';
-import { Contact, ContactRequest } from '../interfaces/contact';
+import { Contact, ContactNew, CONTACTO_VACIO, ContactRequest } from '../interfaces/contact';
 import { ResponseData } from '../interfaces/responses';
 import { AuthService } from './auth.service';
 import { SnackBarService } from '../snack-bar.service';
@@ -78,16 +78,56 @@ export class ContactsService extends ApiService {
     }
   }
 
-  createUser(user:Contact){
-    this.post(this.resource,user)
+  async createContact(contact:ContactNew):Promise<ResponseData<Contact>>{
+    if(contact.id) delete contact.id;
+    const res = await this.post(this.resource,contact);
+    if(!res || !res.status){
+      return {
+        success: false,
+        message: "Error creando contacto",
+      }
+    }
+    const resJson:ContactRequest = await res.json();
+    if(resJson) {
+      return {
+        success: true,
+        message: "Contacto creado con éxito",
+        data: { ...CONTACTO_VACIO, id:"1" } //TODO Actualizar con contacto del back
+      }
+    }
+    return {
+      success: false,
+      message: "Error indeterminado encontrando contacto",
+    }
   }
 
-  updateUser(user:Contact){
-    this.put(this.resource,user)
+  async updateContact(contact:Contact):Promise<ResponseData<Contact>>{
+    const res = await this.put(this.resource,contact);
+    if(!res || !res.status){
+      return {
+        success: false,
+        message: "Error editando contacto",
+      }
+    }
+    return {
+      success: true,
+      message: "Contacto editado con éxito",
+      data: contact
+    }
   }
 
-  deleteUser(userId:string){
-    this.delete(`${this.resource}/${userId}`)
+  async deleteContact(contactId:string):Promise<ResponseData>{
+    const res = await this.delete(`${this.resource}/${contactId}`);
+    if(!res || !res.status){
+      return {
+        success: false,
+        message: "Error eliminado contacto",
+      }
+    }
+    return {
+      success: true,
+      message: "Contacto editado con éxito",
+    }
   }
     
 }

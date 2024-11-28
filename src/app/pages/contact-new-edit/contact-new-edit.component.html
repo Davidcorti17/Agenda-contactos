@@ -1,24 +1,24 @@
 @if(id()){
-  <p>Editando a XXX</p>
+  <p>Editar contacto</p>
 } @else {
   <p>Nuevo contacto</p>
 }
-<form (ngSubmit)="save()">
+<form (ngSubmit)="save()" [formGroup]="form">
   <mat-form-field>
     <mat-label>Nombre</mat-label>
-    <input matInput type="text" name="username" id="username" [autocomplete]="'name'">
+    <input matInput type="text" name="firstName" id="firstName" [autocomplete]="'name'" formControlName="firstName">
   </mat-form-field>
   <mat-form-field>
     <mat-label>Apellido</mat-label>
-    <input matInput type="text" name="username" id="username" [autocomplete]="'lastName'">
+    <input matInput type="text" name="lastName" id="lastName" [autocomplete]="'lastName'" formControlName="lastName">
   </mat-form-field>
   <mat-form-field>
     <mat-label>Teléfono</mat-label>
-    <input matInput type="text" name="username" id="username" [autocomplete]="'phone'">
+    <input matInput type="text" name="phone" id="phone" [autocomplete]="'phone'" formControlName="phone">
   </mat-form-field>
   <mat-form-field>
     <mat-label>Empresa</mat-label>
-    <input matInput type="text" name="username" id="username" [autocomplete]="'company'">
+    <input matInput type="text" name="company" id="company" [autocomplete]="'company'" formControlName="company">
   </mat-form-field>
-  <button mat-button type="submit">Guardar</button>
+  <button mat-button type="submit" [disabled]="form.invalid">Guardar</button>
 </form>
