@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { PostUserRequest, User } from '../../interfaces/usuario';
 import { Contact, ContactNew, CONTACTO_VACIO } from '../../interfaces/contact';
 import { Router } from '@angular/router';
+import { SnackBarService } from '../../snack-bar.service';
 
 @Component({
   selector: 'app-contact-new-edit',
@@ -16,6 +17,8 @@ import { Router } from '@angular/router';
 export class ContactNewEditComponent {
   contactsService = inject(ContactsService);
   router = inject(Router);
+  snackBarService = inject(SnackBarService)
+
 
     id = input<string>();
     contact = computed(()=> {
@@ -41,13 +44,21 @@ export class ContactNewEditComponent {
         //Creación de contacto
         const res = await this.contactsService.createContact(contact);
         if(res.success && res.data) {
+          //Éxito creando contacto
+          this.snackBarService.openSnackbarSuccess(res.message);
           this.contactsService.contacts.update((previous)=>  [... (previous || []),res.data!]);
           this.router.navigate(['/contacts',res.data.id])
+        }
+        else {
+          //Error creando contacto
+          this.snackBarService.openSnackbarError(res.message); 
         }
       } else {
         //Edición de contacto
         const res = await this.contactsService.updateContact(contact as Contact);
         if(res.success){
+          //Éxito editando contacto
+          this.snackBarService.openSnackbarSuccess(res.message);
           this.contactsService.contacts.update((previous)=>  {
             if(!previous) return [];
             return previous.map(oldContact => {
@@ -56,6 +67,8 @@ export class ContactNewEditComponent {
             })
           });
         }
+        //Error editando contacto
+        this.snackBarService.openSnackbarError(res.message);
       }
     }
 

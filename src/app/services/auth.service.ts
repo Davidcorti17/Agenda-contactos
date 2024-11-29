@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { ResponseData } from '../interfaces/responses';
 import { decodeToken } from '../utils/token';
 import { UsersService } from './users.service';
+import { TokenClaims } from '../interfaces/token';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class AuthService extends ApiService {
 
   router = inject(Router);
   userService = inject(UsersService);
+  logoutTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(){
     super();
@@ -27,18 +29,32 @@ export class AuthService extends ApiService {
   user = computed<User|null>(()=> {
     if(!this.token()) return null;
     const tokenDecodificado = decodeToken(this.token()!);
-    // Si el token está vencido hecho al usuario y borro todo.
-    if(!tokenDecodificado.exp || new Date(tokenDecodificado.exp) > new Date()){
-      this.logout();
-      return null;
-    }
     const user:User = {
-      username: "Nombre",
+      username: tokenDecodificado.given_name,
       email: 'Correo',
       role: tokenDecodificado.role
     }
     return user;
   })
+
+  /** Desconecto al usuario si se venció su sesión */
+  vencimientoToken = effect(()=> {
+    if(!this.token()) return this.logout();
+    const tokenDecodificado = decodeToken(this.token()!);
+    if(!tokenDecodificado.exp || new Date(tokenDecodificado.exp*1000) < new Date()){
+      this.logout();
+    } else {
+      if(this.logoutTimer) clearTimeout(this.logoutTimer) //Frena cálculo anterior
+      this.logoutTimer = setTimeout(() => {
+        this.logout()
+      }, tokenDecodificado.exp*1000 - new Date().getTime());
+    }
+  })
+
+  // claims = computed<TokenClaims|null>(()=> {
+  //   if(!this.token()) return null;
+  //   return decodeToken(this.token()!);
+  // })
 
   /** Obtiene información del usuario a partir del token */
   // user:ResourceRef<User | null> = resource({

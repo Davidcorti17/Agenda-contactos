@@ -14,8 +14,4 @@ export class ContactsComponent{
   authService = inject(AuthService);
   contactsService = inject(ContactsService);
 
-  reload(){
-    this.contactsService.contacts.reload()
-  }
-
 }
