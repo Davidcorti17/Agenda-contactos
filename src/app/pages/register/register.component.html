@@ -1,19 +1,19 @@
-<form (ngSubmit)="register()">
+<form (ngSubmit)="register()" [formGroup]="form">
   <mat-form-field>
     <mat-label>Nombre de usuario</mat-label>
-    <input matInput type="password" name="password" id="password">
+    <input matInput type="username" name="username" id="username" formControlName="username">
   </mat-form-field>
   <mat-form-field>
     <mat-label>Correo electrónico</mat-label>
-    <input matInput type="email" name="email" id="email">
+    <input matInput type="email" name="email" id="email" formControlName="email">
   </mat-form-field>
   <mat-form-field>
     <mat-label>Contraseña</mat-label>
-    <input matInput type="password" name="password" id="password">
+    <input matInput type="password" name="password" id="password" formControlName="password">
   </mat-form-field>
   <mat-form-field>
     <mat-label>Reescribí la contraseña</mat-label>
-    <input matInput type="password" name="password2" id="password2">
+    <input matInput type="password" name="password2" id="password2" formControlName="password2">
   </mat-form-field>
   <button mat-button>Registrarse</button>
   <p>¿Ya tenés cuenta? <a [routerLink]="['/login']">Iniciá sesión</a>.</p>

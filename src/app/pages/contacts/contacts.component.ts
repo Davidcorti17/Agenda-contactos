@@ -3,6 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import { ContactsService } from '../../services/contacts.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { GroupsService } from '../../services/groups.service';
 
 @Component({
   selector: 'app-contactos',
@@ -13,5 +14,5 @@ import { RouterModule } from '@angular/router';
 export class ContactsComponent{
   authService = inject(AuthService);
   contactsService = inject(ContactsService);
-
+  groupsService = inject(GroupsService);
 }

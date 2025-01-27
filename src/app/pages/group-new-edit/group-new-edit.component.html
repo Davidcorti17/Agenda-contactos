@@ -1,0 +1,16 @@
+@if(id()){
+  <p>Editar grupo</p>
+} @else {
+  <p>Nuevo grupo</p>
+}
+<form (ngSubmit)="save()" [formGroup]="form">
+  <mat-form-field>
+    <mat-label>Nombre</mat-label>
+    <input matInput type="text" name="firstName" id="firstName" [autocomplete]="'name'" formControlName="firstName">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Descripcion</mat-label>
+    <textarea matInput type="text" name="text" id="text" formControlName="description"></textarea>
+  </mat-form-field>
+  <button mat-button type="submit" [disabled]="form.invalid">Guardar</button>
+</form>

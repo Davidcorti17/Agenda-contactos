@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -33,5 +33,12 @@ export class RegisterComponent {
       this.router.navigate(["/login"])
     }
   }
+
+  form = new FormGroup({
+    username: new FormControl('',Validators.required),
+    password: new FormControl(''),
+    password2: new FormControl('',Validators.required),
+    email: new FormControl(''),
+  });
 
 }

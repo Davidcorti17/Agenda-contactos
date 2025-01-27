@@ -1,10 +1,32 @@
-<img ngSrc="{{contact()?.imageUrl || 'images/placeholder_contact.jpeg'}}"  width="200" height="200">
-<p>{{contact()?.firstName | titlecase}}</p>
-<p>{{contact()?.lastName  | titlecase}}</p>
-<a href="tel:{{contact()?.phone}}">{{contact()?.phone}}</a>
-<a href="https://maps.google.com/{{contact()?.address}}">{{contact()?.address}}</a>
-<a href="mailto:{{contact()?.email}}">{{contact()?.email}}</a>
+@if(contact.error()){
+  <p>Contacto no encontrado</p>
+} @else {
+  <img ngSrc="{{contact.value()?.imageUrl || 'images/placeholder_contact.jpeg'}}"  width="200" height="200">
+  <p>{{contact.value()?.firstName | titlecase}}</p>
+  <p>{{contact.value()?.lastName  | titlecase}}</p>
+  <a href="tel:{{contact.value()?.phone}}">{{contact.value()?.phone}}</a>
+  <a href="https://maps.google.com/{{contact.value()?.address}}">{{contact.value()?.address}}</a>
+  <a href="mailto:{{contact.value()?.email}}">{{contact.value()?.email}}</a>
+  <p>{{contact.value()?.description}}</p>
+  <p>{{contact.value()?.company}}</p>
+  
+  <button [routerLink]="['edit']">Edit</button>
+  <p>{{contact.value() | json}}</p>
 
-<button [routerLink]="['edit']">Edit</button>
-<p>{{contact() | json}}</p>
+  <button (click)="toggleFavorite()">Marcar favorito</button>
+  <p>Estado favorito: {{contact.value()?.isFavorite}}</p>
+
+  <p>Grupos:</p>
+  <ul>
+    @for(group of currentGroups(); track group.id){
+      <li>{{group.description}}</li>
+    }
+    @empty {
+      <p>El contacto no se encuentra en ningún grupo</p>
+    }
+  </ul>
+  <button>Agregar a grupo</button>
+}
+
+<button (click)="delete()">Eliminar contacto</button>
 

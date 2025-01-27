@@ -1,7 +1,7 @@
 <form #loginForm="ngForm" (ngSubmit)="login(loginForm.value)">
   <mat-form-field>
-    <mat-label>Nombre de usuario</mat-label>
-    <input matInput type="text" name="username" id="username" required="true" [minLength]="4" ngModel [autocomplete]="'username'">
+    <mat-label>Correo electrónico</mat-label>
+    <input matInput type="email" name="email" id="email" required="true" [minLength]="4" ngModel [autocomplete]="'email'">
   </mat-form-field>
   <mat-form-field>
     <mat-label>Contraseña</mat-label>

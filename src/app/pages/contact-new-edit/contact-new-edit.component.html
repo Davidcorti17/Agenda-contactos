@@ -20,5 +20,21 @@
     <mat-label>Empresa</mat-label>
     <input matInput type="text" name="company" id="company" [autocomplete]="'company'" formControlName="company">
   </mat-form-field>
+  <mat-form-field>
+    <mat-label>Dirección</mat-label>
+    <input matInput type="text" name="address" id="address" [autocomplete]="'address'" formControlName="address">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Correo electrónico</mat-label>
+    <input matInput type="email" name="email" id="email" [autocomplete]="'current-email'" formControlName="email">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Descripcion</mat-label>
+    <textarea matInput type="text" name="text" id="text" formControlName="description"></textarea>
+  </mat-form-field>
+  <!-- <mat-form-field>
+    <mat-label>Imagen</mat-label>
+    <input type="file" name="image" id="image" formControlName="image">
+  </mat-form-field> -->
   <button mat-button type="submit" [disabled]="form.invalid">Guardar</button>
 </form>

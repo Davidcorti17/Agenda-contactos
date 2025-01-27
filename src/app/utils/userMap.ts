@@ -1,13 +1,13 @@
-import { User, PostUserRequest } from "../interfaces/usuario";
+import { User, UserPostDto } from "../interfaces/usuario";
 
-export function userToUserRequest(user:User):PostUserRequest{
-  const userRequest : PostUserRequest = {
-    FirstName: user.username,
-    LastName: "",
-    Password: "",
-    UserName: user.username,
+export function userToUserRequest(user:User,password:string):UserPostDto{
+  const newUser : UserPostDto = {
+    Email: user.email,
+    FirstName: user.firstName,
+    LastName: user.lastName,
+    Password: password
   }
-  return userRequest;
+  return newUser;
 }
 
 // export function userRequestToUser(user:UserRequest):User{

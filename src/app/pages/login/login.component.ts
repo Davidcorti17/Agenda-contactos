@@ -20,7 +20,7 @@ export class LoginComponent {
   snackBarService = inject(SnackBarService)
 
   async login(form:LoginData){
-    if(!form.username) return;
+    if(!form.email) return;
     if(!form.password) return;
     const login = await this.authService.login(form);
     if(login.success) this.router.navigate(["contacts"]);

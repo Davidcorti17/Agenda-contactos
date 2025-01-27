@@ -1,9 +1,11 @@
 export interface Contact extends ContactNew {
-  id: string,
+  id: number,
+  isFavorite?: boolean
 }
 
+/** Contacto nuevo o contacto editado */
 export interface ContactNew {
-  id?: string,
+  id?: number,
   firstName: string,
   lastName: string,
   phone: string,
@@ -14,17 +16,34 @@ export interface ContactNew {
   description?: string,
 }
 
-export interface ContactRequest {
-  id: string;
+/** Un contacto como lo ve el backend */
+export interface ContactGetDto {
+  id: number;
   firstName: string;
   lastName: string;
   address?: string;
+  number: string;
   email: string;
   image?: string;
-  number: string;
   company?: string;
+  description?: string;
+  userId: number;
+  isFavorite?: boolean
 }
 
+/** Un contacto como lo ve el backend para editar o crear */
+export interface ContactPostDto {
+  FirstName: string;
+  LastName?: string;
+  Address?: string;
+  Number?: string;
+  Email?: string;
+  Image?: string;
+  Company?: string;
+  Description?: string
+}
+
+/** Contacto nuevo ejemplo */
 export const CONTACTO_VACIO:ContactNew = {
   firstName: "",
   lastName: "",

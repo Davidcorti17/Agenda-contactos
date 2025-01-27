@@ -1,25 +1,30 @@
 export interface User {
-  username: string,
   email: string,
-  role: Role
+  firstName: string,
+  lastName: string
 }
 
-export type Role = "Admin" | "User" | "Guest";
 export type State = "Active" | "Archived" | "Confirmed";
 
-export interface PostUserRequest{
+export interface UserPostDto{
   FirstName: string,
   LastName: string,
   Password: string,
-  UserName: string,
+  Email: string,
 }
 
-export interface GetUserRequest{
-  Id: string,
+export interface UserPostRes{
+  Id: number,
   FirstName: string,
   LastName: string,
-  Password: string,
-  UserName: string,
+  Email: string,
   State: State,
-  Role: Role
+}
+
+export interface UserGetDto{
+  Id: number,
+  FirstName: string,
+  LastName: string,
+  Email: string,
+  State: State,
 }

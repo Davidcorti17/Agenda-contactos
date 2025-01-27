@@ -3,7 +3,9 @@
 @for (contact of contactsService.contacts.value(); track contact.id) {
   <div [routerLink]="[contact.id]" >
     <p>{{contact.firstName}}</p>
-    <p>{{contact.address}}</p>
+    <p>{{contact.lastName}}</p>
+    <p>{{contact.phone}}</p>
+    <p>Favorito: {{contact.isFavorite}}</p>
   </div>
 } @empty {
   <p>No hay contactos</p>
@@ -13,3 +15,11 @@
 }
 <a [routerLink]="['/contacts/new']">Agregar</a>
 <button (click)="authService.logout()">Cerrar sesión</button>
+
+
+<p>Grupos</p>
+<ul>
+  @for(group of groupsService.groups.value(); track group.id){
+    <li>{{group.name}}</li>
+  }
+</ul>

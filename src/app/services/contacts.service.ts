@@ -1,10 +1,10 @@
-import { inject, Injectable, resource, ResourceRef, signal } from '@angular/core';
+import { inject, Injectable, resource, ResourceRef } from '@angular/core';
 import { ApiService } from './api.service';
-import { Contact, ContactNew, CONTACTO_VACIO, ContactRequest } from '../interfaces/contact';
+import { Contact, ContactNew, CONTACTO_VACIO, ContactGetDto, ContactPostDto } from '../interfaces/contact';
 import { ResponseData } from '../interfaces/responses';
 import { AuthService } from './auth.service';
 import { SnackBarService } from '../snack-bar.service';
-import { contactRequestToContact } from '../utils/contactMap';
+import { contactGetDtoToContact, contactToContactPostDto } from '../utils/contactMap';
 
 @Injectable({
   providedIn: 'root'
@@ -12,34 +12,34 @@ import { contactRequestToContact } from '../utils/contactMap';
 export class ContactsService extends ApiService {
   authService = inject(AuthService);
   snackbarService = inject(SnackBarService);
-  readonly resource = "Contact";
+  readonly resource = "Contacts";
 
-  // contacts = signal<Contact[]>([]);
   contacts:ResourceRef<Contact[]> = resource({
     request: ()=>  ({token: this.authService.token()}),
     loader: async({request})=> {
       if(!request.token) return [];
-      const res = await this.getAll()
+      const res = await this.getAll();
       if(res.success && res.data) return res.data;
       this.snackbarService.openSnackbarError(res.message);
       return [];
     }
   })
 
+  /** Obtiene todos los contactos de un usuario del backend */
   async getAll():Promise<ResponseData<Contact[]|null>>{
     const res = await this.get(this.resource)
-    if(!res.ok){
+    if(!res || !res.ok){
       return {
         success: false,
         message: "Error buscando contactos",
       }
     }
-    const resJson:ContactRequest[] = await res.json();
+    const resJson:ContactGetDto[] = await res.json();
     if(resJson) {
       return {
         success: true,
         message: "Contactos encontrados",
-        data: resJson.map(contactRequest => contactRequestToContact(contactRequest)) 
+        data: resJson.map(contactRequest => contactGetDtoToContact(contactRequest)) 
       }
     }
     return {
@@ -48,9 +48,12 @@ export class ContactsService extends ApiService {
     }
   }
 
-  async getById(userId:string):Promise<ResponseData<Contact|null>> {
-    if(this.contacts.hasValue()){
-      const contactoLocal = this.contacts.value()!.find(contact => contact.id);
+  /** Obtiene un contacto según su ID
+   * @param [skipCache=false] Indica si podemos usar el caché o si debemos recargar del server el dato del contacto
+   */
+  async getById(userId:number, skipCache:boolean = false):Promise<ResponseData<Contact|null>> {
+    if(this.contacts.hasValue() && !skipCache){
+      const contactoLocal = this.contacts.value()!.find(contact => contact.id === userId);
       if(contactoLocal) return {
         success: true,
         message: "Contacto encontrado con información local",
@@ -58,18 +61,18 @@ export class ContactsService extends ApiService {
       };
     }
     const res = await this.get(`${this.resource}/${userId}`)
-    if(!res.status){
+    if(!res || !res.status){
       return {
         success: false,
         message: "Contacto no encontrado",
       }
     }
-    const resJson:ContactRequest = await res.json();
+    const resJson:ContactGetDto = await res.json();
     if(resJson) {
       return {
         success: true,
         message: "Contacto encontrado",
-        data: contactRequestToContact(resJson)
+        data: contactGetDtoToContact(resJson)
       }
     }
     return {
@@ -78,21 +81,24 @@ export class ContactsService extends ApiService {
     }
   }
 
+  /** Crea un nuevo contacto */
   async createContact(contact:ContactNew):Promise<ResponseData<Contact>>{
-    if(contact.id) delete contact.id;
-    const res = await this.post(this.resource,contact);
+    const contactPostDto:ContactPostDto = contactToContactPostDto(contact);
+    const res = await this.post(this.resource,contactPostDto);
     if(!res || !res.status){
       return {
         success: false,
         message: "Error creando contacto",
       }
     }
-    const resJson:ContactRequest = await res.json();
+    const resJson:ContactGetDto = await res.json();
     if(resJson) {
+      const newContact = contactGetDtoToContact(resJson);
+      this.contacts.update((previous)=>  [... (previous || []),newContact]);
       return {
         success: true,
         message: "Contacto creado con éxito",
-        data: { ...CONTACTO_VACIO, id:"1" } //TODO Actualizar con contacto del back
+        data: newContact
       }
     }
     return {
@@ -101,14 +107,17 @@ export class ContactsService extends ApiService {
     }
   }
 
+  /** Edita datos de un contacto */
   async updateContact(contact:Contact):Promise<ResponseData<Contact>>{
-    const res = await this.put(this.resource,contact);
+    const contactPostDto:ContactPostDto = contactToContactPostDto(contact);
+    const res = await this.put(this.resource,contactPostDto);
     if(!res || !res.status){
       return {
         success: false,
         message: "Error editando contacto",
       }
     }
+    this.updateLocalContact(contact);
     return {
       success: true,
       message: "Contacto editado con éxito",
@@ -116,7 +125,8 @@ export class ContactsService extends ApiService {
     }
   }
 
-  async deleteContact(contactId:string):Promise<ResponseData>{
+  /** Elimina a un contacto */
+  async deleteContact(contactId:number):Promise<ResponseData>{
     const res = await this.delete(`${this.resource}/${contactId}`);
     if(!res || !res.status){
       return {
@@ -124,10 +134,32 @@ export class ContactsService extends ApiService {
         message: "Error eliminado contacto",
       }
     }
+    this.contacts.value.set(this.contacts.value()?.filter(contact => contact.id !== contactId));
     return {
       success: true,
-      message: "Contacto editado con éxito",
+      message: "Contacto eliminado con éxito",
     }
+  }
+
+  /** Marca o desmarca el estado de favorito de un usuario */
+  async toggleFavorite(contactId:number){
+    const res = await this.post(`${this.resource}/${contactId}/favorite`,contactId);
+    if(!res || !res.status){
+      return {
+        success: false,
+        message: "Error marcando favorito",
+      }
+    }
+    return {
+      success: true,
+      message: "Cambio realizado con éxito",
+    }
+  }
+
+  /** Actualiza un contacto de manera local así no tenemos que pedir la info al backend de nuevo */
+  updateLocalContact(contact:Contact){
+    const contactosEditados = this.contacts.value()!.map(existentContact => existentContact.id === contact.id ? contact : existentContact);
+    this.contacts.value.set(contactosEditados);
   }
     
 }

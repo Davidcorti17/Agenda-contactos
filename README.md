@@ -1,18 +1,24 @@
 # Agenda
+Agenda de contactos ejemplo. Versión 2025.
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.0.
+Proyecto generado con [Angular CLI](https://github.com/angular/angular-cli) version 19.0.0.
 
-## Development server
+## Servidor de desarrollo
 
-To start a local development server, run:
+Para correr el servidor, teniendo npm y el CLI de angular instalado corremos en una terminal:
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Una vez abierto el servidor, navegar a `http://localhost:4200/`. La aplicación se reinicia automáticamente al guardar cambios en el código fuente.
 
 
 Cosas que modificaría al back:
 - Me pondría de acuerdo en si se inicia sesión con mail o username.
 - Un endpoint a /users/me para tener mis datos según el token.
+Agregar a favoritos
+Agregar un botón para exportar el contacto
+Agregar varios números para un contacto.
+
+Ir al [repo de backend](https://github.com/NicolasBologna/AgendaApi)

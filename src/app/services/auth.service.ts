@@ -1,9 +1,8 @@
-import { computed, effect, inject, Injectable, resource, ResourceRef, signal } from '@angular/core';
-import { LoginData, LoginRequestData } from '../interfaces/login';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
+import { LoginData, LoginDto } from '../interfaces/login';
 import { ApiService } from './api.service';
 import { RegisterData } from '../interfaces/register';
-import { GetUserRequest, User } from '../interfaces/usuario';
-import { MeRequest } from '../interfaces/me';
+import { UserPostRes, User } from '../interfaces/usuario';
 import { Router } from '@angular/router';
 import { ResponseData } from '../interfaces/responses';
 import { decodeToken } from '../utils/token';
@@ -30,9 +29,9 @@ export class AuthService extends ApiService {
     if(!this.token()) return null;
     const tokenDecodificado = decodeToken(this.token()!);
     const user:User = {
-      username: tokenDecodificado.given_name,
+      firstName: tokenDecodificado.given_name,
+      lastName: tokenDecodificado.family_name,
       email: 'Correo',
-      role: tokenDecodificado.role
     }
     return user;
   })
@@ -129,13 +128,13 @@ export class AuthService extends ApiService {
 
   /** Crea un nuevo usuario */
   async register(registerData:RegisterData):Promise<ResponseData<User | undefined>>{
-    const params: LoginRequestData = {
+    const params: LoginDto = {
       UserName: registerData.username,
       Password: registerData.password
     }
     const res = await this.post("authentication/authenticate", params)
     if(res && res.ok) {
-      const resJson:GetUserRequest = await res.json()
+      const resJson:UserPostRes = await res.json()
       if(!resJson.Id) return {
         success: false,
         message: "Error registrando usuario"

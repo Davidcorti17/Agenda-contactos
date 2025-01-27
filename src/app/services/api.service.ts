@@ -15,11 +15,17 @@ export class ApiService {
     let headers:HeadersInit = {}
     if(token) headers = {...headers, Authorization: "Bearer "+token };
     this.loadingService.addLoad(URI);
-    const res = await fetch(environment.API_URL+URI,{
-      headers
-    })
-    this.loadingService.deleteLoad(URI);
-    return res; 
+    try{
+      const res = await fetch(environment.API_URL+URI,{
+        headers
+      })
+      this.loadingService.deleteLoad(URI);
+      return res; 
+    }
+    catch {
+      this.loadingService.deleteLoad(URI);
+      return null
+    }
   }
 
   async post(URI:string,body:any){
@@ -28,13 +34,18 @@ export class ApiService {
     let headers:HeadersInit = { "content-type" : "Application/json" }
     if(token) headers = {...headers, Authorization: "Bearer "+token };
     this.loadingService.addLoad(URI);
-    const res = await fetch(environment.API_URL+URI,{
-      method: "POST",
-      headers,
-      body: typeof body === "string" ? body : JSON.stringify(body),
-    })
-    this.loadingService.deleteLoad(URI);
-    return res;
+    try{
+      const res = await fetch(environment.API_URL+URI,{
+        method: "POST",
+        headers,
+        body: typeof body === "string" ? body : JSON.stringify(body),
+      })
+      this.loadingService.deleteLoad(URI);
+      return res;
+    } catch {
+      this.loadingService.deleteLoad(URI);
+      return null
+    }
   }
 
   async put(URI:string,body:any){
@@ -42,25 +53,38 @@ export class ApiService {
     const token = localStorage.getItem("token");
     let headers:HeadersInit = { "content-type" : "Application/json" }
     if(token) headers = {...headers, Authorization: "Bearer "+token };
-    const res = await fetch(environment.API_URL+URI,{
-      method: "PUT",
-      headers,
-      body: typeof body === "string" ? body : JSON.stringify(body),
-    })
-    this.loadingService.deleteLoad(URI);
-    return res;
+    this.loadingService.addLoad(URI);
+    try{
+      const res = await fetch(environment.API_URL+URI,{
+        method: "PUT",
+        headers,
+        body: typeof body === "string" ? body : JSON.stringify(body),
+      })
+      this.loadingService.deleteLoad(URI);
+      return res;
+    }
+    catch {
+      this.loadingService.deleteLoad(URI);
+      return null
+    }
   }
 
   async delete(URI:string){
     const token = localStorage.getItem("token");
     let headers:HeadersInit = {}
     if(token) headers = {...headers, Authorization: "Bearer "+token };
-    const res = await fetch(environment.API_URL+URI,{
-      method: "DELETE",
-      headers,
-    })
-    this.loadingService.deleteLoad(URI);
-    return res;
+    this.loadingService.addLoad(URI);
+    try{
+      const res = await fetch(environment.API_URL+URI,{
+        method: "DELETE",
+        headers,
+      })
+      this.loadingService.deleteLoad(URI);
+      return res;
+    } catch {
+      this.loadingService.deleteLoad(URI);
+      return null
+    }
   }
 
   // async decodeBody(res:Response, bodyFormat:RequestBodyFormat): Promise<object | string>{

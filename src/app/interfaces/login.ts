@@ -1,9 +1,9 @@
 export interface LoginData {
-  username:string,
+  email:string,
   password:string
 }
 
-export interface LoginRequestData {
+export interface LoginDto {
   UserName:string,
   Password:string
 }

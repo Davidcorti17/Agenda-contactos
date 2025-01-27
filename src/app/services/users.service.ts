@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
-import { PostUserRequest, User } from '../interfaces/usuario';
+import { UserPostDto, User } from '../interfaces/usuario';
 import { userToUserRequest } from '../utils/userMap';
 import { ResponseData } from '../interfaces/responses';
 
@@ -27,8 +27,8 @@ export class UsersService extends ApiService {
     }
   }
 
-  async updateUser(user:User):Promise<ResponseData>{
-    const userRequest: PostUserRequest = userToUserRequest(user);
+  async updateUser(user:User,password:string):Promise<ResponseData>{
+    const userRequest: UserPostDto = userToUserRequest(user,password);
     this.put(this.resource,user)
     return {
       success: false,
