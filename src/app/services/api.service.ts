@@ -48,8 +48,8 @@ export class ApiService {
     }
   }
 
-  async put(URI:string,body:any){
-    if(typeof body !== "object" && typeof body !== "string") return;
+  async put(URI:string,body?:any){
+    // if(typeof body !== "object" && typeof body !== "string") return;
     const token = localStorage.getItem("token");
     let headers:HeadersInit = { "content-type" : "Application/json" }
     if(token) headers = {...headers, Authorization: "Bearer "+token };

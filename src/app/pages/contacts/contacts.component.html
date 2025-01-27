@@ -1,7 +1,7 @@
 <h1>Contactos</h1>
 
 @for (contact of contactsService.contacts.value(); track contact.id) {
-  <div [routerLink]="[contact.id]" >
+  <div class="contacto-container" [routerLink]="[contact.id]" >
     <p>{{contact.firstName}}</p>
     <p>{{contact.lastName}}</p>
     <p>{{contact.phone}}</p>
@@ -20,6 +20,11 @@
 <p>Grupos</p>
 <ul>
   @for(group of groupsService.groups.value(); track group.id){
-    <li>{{group.name}}</li>
+    <li>{{group.name}} - <button (click)="exportGroup(group.id)">Exportar</button> <button (click)="deleteGroup(group.id)">Borrar</button></li>
   }
 </ul>
+
+
+<button (click)="crearGrupo()">Crear grupo</button>
+
+<button (click)="exportContacts()">Exportar contactos</button>

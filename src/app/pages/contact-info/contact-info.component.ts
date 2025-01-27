@@ -47,15 +47,18 @@ export class ContactInfoComponent {
       })
     }
 
-    addToGroup(groupId:number){
-      //TODO
-    }
-
     async delete(){
       const res = await this.contactsService.deleteContact(this.id())
       if(res && res.success){
         this.router.navigate(['/']);
       }
+    }
+
+    async addToGroup(groupId:number){
+      const res = await this.groupsService.toogleContactOnGroup(this.contact.value()!.id,groupId)
+      // const currentGroup = this.groupsService.groups.value()?.find(group => group.id === this.id());
+      // if(!currentGroup) return;
+      // this.groupsService.updateGroup({...currentGroup,contacts: [...currentGroup.contacts,this.contact.value()!]})
     }
 
 }

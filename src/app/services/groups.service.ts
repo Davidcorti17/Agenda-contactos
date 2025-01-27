@@ -5,7 +5,7 @@ import { Group, GroupGetDto, GroupPostDto, NewGroup } from '../interfaces/group'
 import { ResponseData } from '../interfaces/responses';
 import { ApiService } from './api.service';
 import { groupGetDtoToGroup, groupToGroupPostDto } from '../utils/groupMap';
-import { parseCSV } from '../utils/CSV';
+import { descargarCSV } from '../utils/CSV';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +27,7 @@ export class GroupsService extends ApiService {
     }
   })
 
+  /** Obtiene todos los grupos del backend */
   async getAll():Promise<ResponseData<Group[]|null>>{
     const res = await this.get(this.resource)
     if(!res || !res.ok){
@@ -49,6 +50,7 @@ export class GroupsService extends ApiService {
     }
   }
   
+  /** Obtener un sólo grupo desde su ID */
   async getById(groupId:string):Promise<ResponseData<Group|null>> {
     if(this.groups.hasValue()){
       const groupLocal = this.groups.value()!.find(group => group.id);
@@ -79,6 +81,7 @@ export class GroupsService extends ApiService {
     }
   }
 
+  /** Crear un nuevo grupo en backend */
   async createGroup(group:NewGroup):Promise<ResponseData<Group>>{
     const groupPostDto:GroupPostDto = groupToGroupPostDto(group);
     const res = await this.post(this.resource,groupPostDto);
@@ -90,10 +93,12 @@ export class GroupsService extends ApiService {
     }
     const resJson:GroupGetDto = await res.json();
     if(resJson) {
+      const newGrupo = groupGetDtoToGroup(resJson);
+      this.groups.update((previous)=>  [... (previous || []),newGrupo]);
       return {
         success: true,
         message: "Grupo creado con éxito",
-        data: groupGetDtoToGroup(resJson)
+        data: newGrupo
       }
     }
     return {
@@ -102,6 +107,7 @@ export class GroupsService extends ApiService {
     }
   }
 
+  /** Edita datos de un grupo en el backend */
   async updateGroup(group:Group):Promise<ResponseData<Group>>{
     const groupPostDto:GroupPostDto = groupToGroupPostDto(group);
     const res = await this.put(this.resource,groupPostDto);
@@ -111,6 +117,7 @@ export class GroupsService extends ApiService {
         message: "Error editando grupo",
       }
     }
+    this.updateLocalGroup(group);
     return {
       success: true,
       message: "Grupo editado con éxito",
@@ -118,6 +125,7 @@ export class GroupsService extends ApiService {
     }
   }
 
+  /** Elimina un grupo en el backend */
   async deleteGroup(groupId:number):Promise<ResponseData>{
     const res = await this.delete(`${this.resource}/${groupId}`);
     if(!res || !res.status){
@@ -126,15 +134,16 @@ export class GroupsService extends ApiService {
         message: "Error eliminado grupo",
       }
     }
+    this.groups.value.set(this.groups.value()?.filter(group => group.id !== groupId));
     return {
       success: true,
-      message: "Grupo editado con éxito",
+      message: "Grupo eliminado con éxito",
     }
   }
 
   /** Exporta un grupo en CSV */
   async export(groupId:number){
-    const res = await this.get(`${this.resource}/${groupId}`);
+    const res = await this.get(`${this.resource}/export/${groupId}`);
     if(!res || !res.status){
       return {
         success: false,
@@ -147,7 +156,7 @@ export class GroupsService extends ApiService {
       success: true,
       message: "Error exportando grupo",
     }
-    const csv = parseCSV(csvString);
+    const csv = descargarCSV("nombre ejemplo",csvString);
     return {
       success: true,
       message: "Grupo editado con éxito",
@@ -155,9 +164,25 @@ export class GroupsService extends ApiService {
   }
 
   /** Actualiza un grupo de manera local así no tenemos que pedir la info al backend de nuevo */
-    updateLocalGroup(group:Group){
-      const gruposEditados = this.groups.value()!.map(existentGroup => existentGroup.id === group.id ? group : existentGroup);
-      this.groups.value.set(gruposEditados);
+  updateLocalGroup(group:Group){
+    const gruposEditados = this.groups.value()!.map(existentGroup => existentGroup.id === group.id ? group : existentGroup);
+    this.groups.value.set(gruposEditados);
+  }
+
+  /** Agrega o borra a un contacto de un grupo */
+  async toogleContactOnGroup(contactId:number,groupId:number){
+    const res = await this.put(`${this.resource}/${groupId}/contact/${contactId}`);
+    if(!res || !res.ok){
+      return {
+        success: false,
+        message: "Error modificando grupo",
+      }
     }
+    //this.groups.value.set(this.groups.value()?.filter(group => group.id !== groupId));
+    return {
+      success: true,
+      message: "Grupo modificado",
+    }
+  }
     
 }

@@ -30,3 +30,8 @@
 
 <button (click)="delete()">Eliminar contacto</button>
 
+
+
+@for(group of groupsService.groups.value(); track group.id){
+  <p>{{group.name}} <button (click)="addToGroup(group.id)">Meter acá</button></p>
+}

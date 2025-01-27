@@ -15,4 +15,23 @@ export class ContactsComponent{
   authService = inject(AuthService);
   contactsService = inject(ContactsService);
   groupsService = inject(GroupsService);
+
+  async crearGrupo(){
+    const res = await this.groupsService.createGroup({name:"Grupo "+this.groupsService.groups.value()?.length,description:"Descripción ejemplo"});
+    if(res.success){
+
+    }
+  }
+
+  async exportGroup(groupId:number){
+    this.groupsService.export(groupId);
+  }
+
+  async exportContacts(){
+    this.contactsService.export();
+  }
+
+  async deleteGroup(groupId:number){
+    this.groupsService.deleteGroup(groupId);
+  }
 }

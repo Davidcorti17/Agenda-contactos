@@ -5,6 +5,7 @@ import { ResponseData } from '../interfaces/responses';
 import { AuthService } from './auth.service';
 import { SnackBarService } from '../snack-bar.service';
 import { contactGetDtoToContact, contactToContactPostDto } from '../utils/contactMap';
+import { descargarCSV } from '../utils/CSV';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class ContactsService extends ApiService {
     loader: async({request})=> {
       if(!request.token) return [];
       const res = await this.getAll();
-      if(res.success && res.data) return res.data;
+      if(res.success && res.data) return this.sortContacts(res.data);
       this.snackbarService.openSnackbarError(res.message);
       return [];
     }
@@ -159,7 +160,33 @@ export class ContactsService extends ApiService {
   /** Actualiza un contacto de manera local así no tenemos que pedir la info al backend de nuevo */
   updateLocalContact(contact:Contact){
     const contactosEditados = this.contacts.value()!.map(existentContact => existentContact.id === contact.id ? contact : existentContact);
-    this.contacts.value.set(contactosEditados);
+    this.contacts.value.set(this.sortContacts(contactosEditados));
+  }
+
+  sortContacts(contacts:Contact[]){
+    return contacts.sort((a,b)=> (a.isFavorite ? -1 : 1 ) -  (b.isFavorite ? -1 : 1 ) || a.lastName.localeCompare(b.lastName));
+  }
+
+/** Exporta un grupo en CSV */
+  async export(){
+    const res = await this.get(`${this.resource}/export`);
+    if(!res || !res.status){
+      return {
+        success: false,
+        message: "Error eliminado grupo",
+      }
+    }
+    //Generar CSV con texto
+    const csvString = await res.text();
+    if(!csvString) return {
+      success: true,
+      message: "Error exportando grupo",
+    }
+    const csv = descargarCSV("nombre ejemplo",csvString);
+    return {
+      success: true,
+      message: "Grupo editado con éxito",
+    }
   }
     
 }
