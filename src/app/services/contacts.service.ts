@@ -1,6 +1,6 @@
 import { inject, Injectable, resource, ResourceRef } from '@angular/core';
 import { ApiService } from './api.service';
-import { Contact, ContactNew, CONTACTO_VACIO, ContactGetDto, ContactPostDto } from '../interfaces/contact';
+import { Contact, ContactNew, ContactGetDto, ContactPostDto } from '../interfaces/contact';
 import { ResponseData } from '../interfaces/responses';
 import { AuthService } from './auth.service';
 import { SnackBarService } from '../snack-bar.service';

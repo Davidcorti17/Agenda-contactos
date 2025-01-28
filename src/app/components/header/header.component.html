@@ -1,5 +1,5 @@
 <header>
-  <a [routerLink]="['/']" >Contactos</a>
+  <a mat-button [routerLink]="['/']" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Contactos</a>
   <p>{{authService.user()?.email}}</p>
   <button mat-button (click)="authService.logout()">Logout</button>
 </header>

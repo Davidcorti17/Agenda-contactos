@@ -6,6 +6,8 @@ import { ResponseData } from '../interfaces/responses';
 import { ApiService } from './api.service';
 import { groupGetDtoToGroup, groupToGroupPostDto } from '../utils/groupMap';
 import { descargarCSV } from '../utils/CSV';
+import { Contact } from '../interfaces/contact';
+import { ContactsService } from './contacts.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +17,7 @@ export class GroupsService extends ApiService {
   authService = inject(AuthService);
   snackbarService = inject(SnackBarService);
   readonly resource = "Groups";
+  contactsService = inject(ContactsService);
 
   groups:ResourceRef<Group[]> = resource({
     request: ()=> ({token: this.authService.token()}),
@@ -178,7 +181,27 @@ export class GroupsService extends ApiService {
         message: "Error modificando grupo",
       }
     }
-    //this.groups.value.set(this.groups.value()?.filter(group => group.id !== groupId));
+    let agregado = true;
+    // Actualizo la lista de contactos dentro de la lista de grupos
+    this.groups.value.update((group)=> group!.map((group => {
+        if(group.id !== groupId) return group;
+        const included = group.contacts.findIndex(contact => contact.id === contact.id);
+        if(included) {
+          group.contacts.splice(included,1);
+          agregado = false;
+          return group
+        }
+        group.contacts.push(this.contactsService.contacts.value()!.find(contact => contact.id === contactId)!);
+        return group
+      }))
+    );
+    // Actualizo los grupos dentro de la lista de contactos
+    this.contactsService.contacts.value.update((contacts)=> contacts!.map(contact => {
+      if(contact.id !== contactId) return contact;
+      if(agregado) return {...contact, groupIds: [...contact.groupIds, groupId]}
+      return {...contact, groupIds: contact.groupIds.filter(group => group !== groupId)}
+    }))
+
     return {
       success: true,
       message: "Grupo modificado",

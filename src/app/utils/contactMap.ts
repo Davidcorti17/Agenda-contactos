@@ -21,7 +21,8 @@ export function contactGetDtoToContact(contactDto:ContactGetDto):Contact{
     lastName: contactDto.lastName,
     phone: contactDto.number,
     email: contactDto.email,
-    isFavorite: contactDto.isFavorite || false
+    isFavorite: contactDto.isFavorite || false,
+    groupIds: contactDto.groupIds,
   }
   if(contactDto.image) contact.imageUrl = contactDto.image;
   if(contactDto.address) contact.address = contactDto.address;

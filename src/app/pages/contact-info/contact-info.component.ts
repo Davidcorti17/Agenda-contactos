@@ -18,7 +18,7 @@ export class ContactInfoComponent {
   groupsService = inject(GroupsService);
   snackBarService = inject(SnackBarService)
   id = input.required<number>();
-  currentGroups = computed(()=> this.groupsService.groups.value()?.filter(grupo => grupo.contacts.some(contact => contact.id === this.id())))
+  currentGroups = computed(()=> this.groupsService.groups.value()?.filter(grupo => this.contact.value()?.groupIds.includes(grupo.id)))
   router = inject(Router);
 
   contact:ResourceRef<Contact> = resource({
@@ -27,7 +27,7 @@ export class ContactInfoComponent {
         const res = await this.contactsService.getById(request.contactId)
         if(res.success && res.data) return res.data;
         this.snackBarService.openSnackbarError(res.message);
-        return {...CONTACTO_VACIO,id:0}
+        return {...CONTACTO_VACIO}
       }
     })
 
@@ -55,10 +55,8 @@ export class ContactInfoComponent {
     }
 
     async addToGroup(groupId:number){
-      const res = await this.groupsService.toogleContactOnGroup(this.contact.value()!.id,groupId)
-      // const currentGroup = this.groupsService.groups.value()?.find(group => group.id === this.id());
-      // if(!currentGroup) return;
-      // this.groupsService.updateGroup({...currentGroup,contacts: [...currentGroup.contacts,this.contact.value()!]})
+      const res = await this.groupsService.toogleContactOnGroup(this.contact.value()!.id,groupId);
+      this.contact.reload();
     }
 
 }

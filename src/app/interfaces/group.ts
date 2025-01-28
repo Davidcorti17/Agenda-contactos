@@ -1,4 +1,4 @@
-import { ContactGetDto } from "./contact"
+import { Contact, ContactGetDto } from "./contact"
 
 /** Nuevo grupo de contactos */
 export interface NewGroup {
@@ -9,7 +9,7 @@ export interface NewGroup {
 /** Grupo de contactos */
 export interface Group extends NewGroup{
   id: number,
-  contacts: ContactGetDto[]
+  contacts: Contact[]
 }
 
 /** Grupo de contactos según el back */

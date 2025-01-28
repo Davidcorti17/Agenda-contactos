@@ -1,6 +1,7 @@
 export interface Contact extends ContactNew {
   id: number,
   isFavorite?: boolean
+  groupIds: number[]
 }
 
 /** Contacto nuevo o contacto editado */
@@ -29,6 +30,7 @@ export interface ContactGetDto {
   description?: string;
   userId: number;
   isFavorite?: boolean
+  groupIds: number[]
 }
 
 /** Un contacto como lo ve el backend para editar o crear */
@@ -44,8 +46,14 @@ export interface ContactPostDto {
 }
 
 /** Contacto nuevo ejemplo */
-export const CONTACTO_VACIO:ContactNew = {
+export const CONTACTO_NUEVO_VACIO:ContactNew = {
   firstName: "",
   lastName: "",
-  phone: ""
+  phone: "",
+}
+
+export const CONTACTO_VACIO:Contact = {
+  ...CONTACTO_NUEVO_VACIO,
+  groupIds: [],
+  id:0
 }

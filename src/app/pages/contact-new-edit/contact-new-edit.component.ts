@@ -3,7 +3,7 @@ import { ContactsService } from '../../services/contacts.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Contact, ContactNew, CONTACTO_VACIO } from '../../interfaces/contact';
+import { Contact, ContactNew, CONTACTO_NUEVO_VACIO, CONTACTO_VACIO } from '../../interfaces/contact';
 import { Router } from '@angular/router';
 import { SnackBarService } from '../../snack-bar.service';
 
@@ -34,7 +34,7 @@ export class ContactNewEditComponent {
   })
 
   async save(){
-    const contact:ContactNew = this.contact() || {...CONTACTO_VACIO}; 
+    const contact:ContactNew = this.contact() || {...CONTACTO_NUEVO_VACIO}; 
     contact.firstName = this.form.controls.firstName.value || '';
     contact.lastName = this.form.controls.lastName.value || '';
     contact.phone = this.form.controls.phone.value || '';
