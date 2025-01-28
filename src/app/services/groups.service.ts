@@ -32,6 +32,7 @@ export class GroupsService extends ApiService {
 
   /** Obtiene todos los grupos del backend */
   async getAll():Promise<ResponseData<Group[]|null>>{
+    console.log("El token en grupos es",this.authService.token())
     const res = await this.get(this.resource)
     if(!res || !res.ok){
       return {

@@ -27,7 +27,7 @@ export class AuthService extends ApiService {
   /** Obtiene información del usuario a partir del claim */
   user = computed<User|null>(()=> {
     if(!this.token()) return null;
-    const tokenDecodificado = decodeToken(this.token()!);
+    const tokenDecodificado:TokenClaims = decodeToken(this.token()!);
     const user:User = {
       firstName: tokenDecodificado.given_name,
       lastName: tokenDecodificado.family_name,
@@ -49,41 +49,6 @@ export class AuthService extends ApiService {
       }, tokenDecodificado.exp*1000 - new Date().getTime());
     }
   })
-
-  // claims = computed<TokenClaims|null>(()=> {
-  //   if(!this.token()) return null;
-  //   return decodeToken(this.token()!);
-  // })
-
-  /** Obtiene información del usuario a partir del token */
-  // user:ResourceRef<User | null> = resource({
-  //   request: () => (this.token()),
-  //   loader: async (request)=> {
-  //     if(!this.token()) return null;
-  //     const tokenDecodificado = decodeToken(this.token()!);
-  //     if(!tokenDecodificado.exp || new Date(tokenDecodificado.exp) > new Date()){
-  //       this.logout();
-  //       return null;
-  //     }
-  //     return user;
-  //     //Obtengo los datos del usuario pidiendo al back la información de mi usuario por mi ID
-  //     if (tokenDecodificado.sub){
-  //       const resUser = await this.userService.getById(tokenDecodificado.sub);
-  //       if(resUser.success && resUser.data){
-  //         return resUser.data
-  //       }
-  //     }
-  //     // console.log(tokenDecodificado)
-  //     return null
-  //     //Obtengo los datos del usuario pidiendo al back la información de mi usuario por mi token
-  //     // const res = await this.get("me");
-  //     // if(res && res.ok) {
-  //     //   const resJson:MeRequest = res.json()
-  //     //   return resJson
-  //     // }
-  //     // return null
-  //   },
-  // });
 
   /** El token guardado en memoria de la aplicación */
   token = signal<string | null>(null);
@@ -109,6 +74,7 @@ export class AuthService extends ApiService {
     if(res.ok) {
       const token = await res.text();
       if(token) this.token.set(token);
+      localStorage.setItem("token",token); //Lo escribo a mano en LS para que no haya tardanza en ejecutar en efecto en esta oportunidad
       return {
         success: true,
         message: "Sesión iniciada con éxito"
