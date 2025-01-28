@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { Router, RouterModule } from '@angular/router';
 import { RegisterData } from '../../interfaces/register';
 import { AuthService } from '../../services/auth.service';
-import { SnackBarService } from '../../snack-bar.service';
+import { SnackBarService } from '../../services/snack-bar.service';
 
 @Component({
   selector: 'app-register',

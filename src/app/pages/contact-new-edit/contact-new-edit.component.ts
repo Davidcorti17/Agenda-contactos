@@ -5,7 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Contact, ContactNew, CONTACTO_NUEVO_VACIO, CONTACTO_VACIO } from '../../interfaces/contact';
 import { Router } from '@angular/router';
-import { SnackBarService } from '../../snack-bar.service';
+import { SnackBarService } from '../../services/snack-bar.service';
 
 @Component({
   selector: 'app-contact-new-edit',

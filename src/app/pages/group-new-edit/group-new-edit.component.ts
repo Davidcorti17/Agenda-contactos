@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
-import { SnackBarService } from '../../snack-bar.service';
+import { SnackBarService } from '../../services/snack-bar.service';
 import { GroupsService } from '../../services/groups.service';
 import { Group, GRUPO_VACIO, NewGroup } from '../../interfaces/group';
 

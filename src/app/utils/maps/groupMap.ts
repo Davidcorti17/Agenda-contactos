@@ -1,4 +1,4 @@
-import { Group, GroupGetDto, GroupPostDto, NewGroup } from "../interfaces/group";
+import { Group, GroupGetDto, GroupPostDto, NewGroup } from "../../interfaces/group";
 import { contactGetDtoToContact } from "./contactMap";
 
 export function groupToGroupPostDto(group:Group|NewGroup):GroupPostDto{

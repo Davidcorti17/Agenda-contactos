@@ -3,7 +3,7 @@ import { ContactsService } from '../../services/contacts.service';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { Contact, CONTACTO_VACIO } from '../../interfaces/contact';
-import { SnackBarService } from '../../snack-bar.service';
+import { SnackBarService } from '../../services/snack-bar.service';
 import { GroupsService } from '../../services/groups.service';
 
 @Component({

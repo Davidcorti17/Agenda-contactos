@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { UserPostDto, User } from '../interfaces/usuario';
-import { userToUserRequest } from '../utils/userMap';
+import { userToUserRequest } from '../utils/maps/userMap';
 import { ResponseData } from '../interfaces/responses';
 
 @Injectable({

@@ -3,8 +3,8 @@ import { ApiService } from './api.service';
 import { Contact, ContactNew, ContactGetDto, ContactPostDto } from '../interfaces/contact';
 import { ResponseData } from '../interfaces/responses';
 import { AuthService } from './auth.service';
-import { SnackBarService } from '../snack-bar.service';
-import { contactGetDtoToContact, contactToContactPostDto } from '../utils/contactMap';
+import { SnackBarService } from './snack-bar.service';
+import { contactGetDtoToContact, contactToContactPostDto } from '../utils/maps/contactMap';
 import { descargarCSV } from '../utils/CSV';
 
 @Injectable({

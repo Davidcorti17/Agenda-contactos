@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { LoginData } from '../../interfaces/login';
-import { SnackBarService } from '../../snack-bar.service';
+import { SnackBarService } from '../../services/snack-bar.service';
 
 @Component({
   selector: 'app-login',

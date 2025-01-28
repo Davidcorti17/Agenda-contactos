@@ -1,4 +1,4 @@
-import { User, UserPostDto } from "../interfaces/usuario";
+import { User, UserPostDto } from "../../interfaces/usuario";
 
 export function userToUserRequest(user:User,password:string):UserPostDto{
   const newUser : UserPostDto = {

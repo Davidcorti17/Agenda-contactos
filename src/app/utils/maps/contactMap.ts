@@ -1,4 +1,4 @@
-import { Contact, ContactGetDto, ContactNew, ContactPostDto } from "../interfaces/contact";
+import { Contact, ContactGetDto, ContactNew, ContactPostDto } from "../../interfaces/contact";
 
 export function contactToContactPostDto(contact:Contact|ContactNew):ContactPostDto{
   const newContact : ContactPostDto = {

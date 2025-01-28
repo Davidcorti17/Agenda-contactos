@@ -1,10 +1,10 @@
 import { inject, Injectable, resource, ResourceRef } from '@angular/core';
 import { AuthService } from './auth.service';
-import { SnackBarService } from '../snack-bar.service';
+import { SnackBarService } from './snack-bar.service';
 import { Group, GroupGetDto, GroupPostDto, NewGroup } from '../interfaces/group';
 import { ResponseData } from '../interfaces/responses';
 import { ApiService } from './api.service';
-import { groupGetDtoToGroup, groupToGroupPostDto } from '../utils/groupMap';
+import { groupGetDtoToGroup, groupToGroupPostDto } from '../utils/maps/groupMap';
 import { descargarCSV } from '../utils/CSV';
 import { Contact } from '../interfaces/contact';
 import { ContactsService } from './contacts.service';
