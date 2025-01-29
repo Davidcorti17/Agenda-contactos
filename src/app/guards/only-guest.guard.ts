@@ -7,5 +7,5 @@ export const onlyGuestGuard: CanActivateFn = (route, state) => {
   if (!authService.token()) return true;
   const router = inject(Router)
   const urlTree: UrlTree = router.parseUrl('/contacts');
-  return new RedirectCommand(urlTree, { skipLocationChange: true });
+  return new RedirectCommand(urlTree);
 };

@@ -6,12 +6,9 @@ import { ResponseData } from '../interfaces/responses';
 import { ApiService } from './api.service';
 import { groupGetDtoToGroup, groupToGroupPostDto } from '../utils/maps/groupMap';
 import { descargarCSV } from '../utils/CSV';
-import { Contact } from '../interfaces/contact';
 import { ContactsService } from './contacts.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({providedIn: 'root'})
 export class GroupsService extends ApiService {
 
   authService = inject(AuthService);
@@ -32,8 +29,7 @@ export class GroupsService extends ApiService {
 
   /** Obtiene todos los grupos del backend */
   async getAll():Promise<ResponseData<Group[]|null>>{
-    console.log("El token en grupos es",this.authService.token())
-    const res = await this.get(this.resource)
+    const res = await this.get(this.resource);
     if(!res || !res.ok){
       return {
         success: false,
@@ -55,9 +51,9 @@ export class GroupsService extends ApiService {
   }
   
   /** Obtener un sólo grupo desde su ID */
-  async getById(groupId:string):Promise<ResponseData<Group|null>> {
+  async getById(groupId:number):Promise<ResponseData<Group|null>> {
     if(this.groups.hasValue()){
-      const groupLocal = this.groups.value()!.find(group => group.id);
+      const groupLocal = this.groups.value()!.find(group => group.id === group.id);
       if(groupLocal) return {
         success: true,
         message: "Grupo encontrado con información local",
@@ -65,7 +61,7 @@ export class GroupsService extends ApiService {
       };
     }
     const res = await this.get(`${this.resource}/${groupId}`)
-    if(!res || !res.status){
+    if(!res || !res.ok){
       return {
         success: false,
         message: "Grupo no encontrado",
@@ -115,7 +111,7 @@ export class GroupsService extends ApiService {
   async updateGroup(group:Group):Promise<ResponseData<Group>>{
     const groupPostDto:GroupPostDto = groupToGroupPostDto(group);
     const res = await this.put(this.resource,groupPostDto);
-    if(!res || !res.status){
+    if(!res || !res.ok){
       return {
         success: false,
         message: "Error editando grupo",
@@ -132,7 +128,7 @@ export class GroupsService extends ApiService {
   /** Elimina un grupo en el backend */
   async deleteGroup(groupId:number):Promise<ResponseData>{
     const res = await this.delete(`${this.resource}/${groupId}`);
-    if(!res || !res.status){
+    if(!res || !res.ok){
       return {
         success: false,
         message: "Error eliminado grupo",
@@ -148,7 +144,7 @@ export class GroupsService extends ApiService {
   /** Exporta un grupo en CSV */
   async export(groupId:number){
     const res = await this.get(`${this.resource}/export/${groupId}`);
-    if(!res || !res.status){
+    if(!res || !res.ok){
       return {
         success: false,
         message: "Error eliminado grupo",

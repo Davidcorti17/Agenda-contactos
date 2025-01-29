@@ -1,0 +1,7 @@
+@if(!group.value()){
+  <p>Grupo no econtrado</p>
+} @else {
+  @for(contact of group.value()?.contacts; track contact.id){
+    <p>{{contact.firstName}} {{contact.lastName}}</p>
+  }
+}

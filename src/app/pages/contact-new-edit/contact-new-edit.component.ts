@@ -3,13 +3,14 @@ import { ContactsService } from '../../services/contacts.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Contact, ContactNew, CONTACTO_NUEVO_VACIO, CONTACTO_VACIO } from '../../interfaces/contact';
+import { Contact, ContactNew, CONTACTO_NUEVO_VACIO } from '../../interfaces/contact';
 import { Router } from '@angular/router';
 import { SnackBarService } from '../../services/snack-bar.service';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-contact-new-edit',
-  imports: [ReactiveFormsModule,MatFormFieldModule,MatInputModule,MatInputModule],
+  imports: [ReactiveFormsModule,MatFormFieldModule,MatInputModule,MatButtonModule],
   templateUrl: './contact-new-edit.component.html',
   styleUrl: './contact-new-edit.component.scss'
 })
@@ -42,6 +43,7 @@ export class ContactNewEditComponent {
     contact.description = this.form.controls.description.value || '';
     contact.address = this.form.controls.address.value || '';
     contact.email = this.form.controls.email.value || '';
+    contact.imageUrl = this.form.controls.imageUrl.value || '';
     if(!contact.id){
       //Creación de contacto
       const res = await this.contactsService.createContact(contact);
@@ -69,11 +71,11 @@ export class ContactNewEditComponent {
   form = new FormGroup({
     firstName: new FormControl('',Validators.required),
     lastName: new FormControl(''),
-    phone: new FormControl('',Validators.required),
+    phone: new FormControl('',[Validators.required,Validators.minLength(5)]),
     company: new FormControl(''),
-    address: new FormControl(''),
+    address: new FormControl('',Validators.minLength(5)),
     email: new FormControl('',Validators.email),
     description: new FormControl(''),
-    // image: new FormControl(''),
+    imageUrl: new FormControl('',Validators.minLength(10)),
   });
 }

@@ -1,7 +1,7 @@
 @if(id()){
-  <p>Editar contacto</p>
+  <h1>Editar contacto</h1>
 } @else {
-  <p>Nuevo contacto</p>
+  <h1>Nuevo contacto</h1>
 }
 <form (ngSubmit)="save()" [formGroup]="form">
   <mat-form-field>
@@ -29,12 +29,12 @@
     <input matInput type="email" name="email" id="email" [autocomplete]="'current-email'" formControlName="email">
   </mat-form-field>
   <mat-form-field>
+    <mat-label>Imagen</mat-label>
+    <input matInput type="text" name="imageUrl" id="imageUrl" formControlName="imageUrl">
+  </mat-form-field>
+  <mat-form-field>
     <mat-label>Descripcion</mat-label>
     <textarea matInput type="text" name="text" id="text" formControlName="description"></textarea>
   </mat-form-field>
-  <!-- <mat-form-field>
-    <mat-label>Imagen</mat-label>
-    <input type="file" name="image" id="image" formControlName="image">
-  </mat-form-field> -->
-  <button mat-button type="submit" [disabled]="form.invalid">Guardar</button>
+  <button mat-button [disabled]="form.invalid">Guardar</button>
 </form>

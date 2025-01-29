@@ -37,12 +37,20 @@ export const routes: Routes = [{
       {
         path: "contacts/:id",
         loadComponent: ()=> import("./pages/contact-info/contact-info.component").then(c => c.ContactInfoComponent),
-        title: "Agenda de contactos"
+        title: "Agenda de contactos | Detalle de contacto"
       },
       {
         path: "contacts/:id/edit",
         loadComponent: ()=> import("./pages/contact-new-edit/contact-new-edit.component").then(c => c.ContactNewEditComponent),
         title: "Agenda de contactos | Editar contacto"
+      },{
+        path: "groups",
+        loadComponent: ()=> import("./pages/groups/groups.component").then(c => c.GroupsComponent),
+        title: "Agenda de contactos | Grupos"
+      },{
+        path: "groups/:id",
+        loadComponent: ()=> import("./pages/group-details/group-details.component").then(c => c.GroupDetailsComponent),
+        title: "Agenda de contactos | Detalle de grupo"
       },
     ]
   },

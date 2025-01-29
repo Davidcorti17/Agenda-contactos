@@ -62,7 +62,7 @@ export class ContactsService extends ApiService {
       };
     }
     const res = await this.get(`${this.resource}/${userId}`)
-    if(!res || !res.status){
+    if(!res || !res.ok){
       return {
         success: false,
         message: "Contacto no encontrado",
@@ -86,7 +86,7 @@ export class ContactsService extends ApiService {
   async createContact(contact:ContactNew):Promise<ResponseData<Contact>>{
     const contactPostDto:ContactPostDto = contactToContactPostDto(contact);
     const res = await this.post(this.resource,contactPostDto);
-    if(!res || !res.status){
+    if(!res || !res.ok){
       return {
         success: false,
         message: "Error creando contacto",
@@ -112,7 +112,7 @@ export class ContactsService extends ApiService {
   async updateContact(contact:Contact):Promise<ResponseData<Contact>>{
     const contactPostDto:ContactPostDto = contactToContactPostDto(contact);
     const res = await this.put(this.resource,contactPostDto);
-    if(!res || !res.status){
+    if(!res || !res.ok){
       return {
         success: false,
         message: "Error editando contacto",
@@ -129,7 +129,7 @@ export class ContactsService extends ApiService {
   /** Elimina a un contacto */
   async deleteContact(contactId:number):Promise<ResponseData>{
     const res = await this.delete(`${this.resource}/${contactId}`);
-    if(!res || !res.status){
+    if(!res || !res.ok){
       return {
         success: false,
         message: "Error eliminado contacto",
@@ -145,7 +145,7 @@ export class ContactsService extends ApiService {
   /** Marca o desmarca el estado de favorito de un usuario */
   async toggleFavorite(contactId:number){
     const res = await this.post(`${this.resource}/${contactId}/favorite`,contactId);
-    if(!res || !res.status){
+    if(!res || !res.ok){
       return {
         success: false,
         message: "Error marcando favorito",
@@ -170,7 +170,7 @@ export class ContactsService extends ApiService {
 /** Exporta un grupo en CSV */
   async export(){
     const res = await this.get(`${this.resource}/export`);
-    if(!res || !res.status){
+    if(!res || !res.ok){
       return {
         success: false,
         message: "Error eliminado grupo",

@@ -1,0 +1,10 @@
+<div class="contacto-container" [routerLink]="[contact().id]" >
+  <p>{{contact().firstName}}</p>
+  <p>{{contact().lastName}}</p>
+  <p>{{contact().phone}}</p>
+  <p>@if(contact().isFavorite){
+    <mat-icon fontIcon="star"/>
+  } @else {
+    <mat-icon fontIcon="bookmark_star"/>
+  }</p>
+</div>

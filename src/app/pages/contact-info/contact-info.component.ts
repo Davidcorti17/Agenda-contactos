@@ -5,10 +5,14 @@ import { Router, RouterModule } from '@angular/router';
 import { Contact, CONTACTO_VACIO } from '../../interfaces/contact';
 import { SnackBarService } from '../../services/snack-bar.service';
 import { GroupsService } from '../../services/groups.service';
+import { MatButtonModule } from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatChipsModule} from '@angular/material/chips';
+
 
 @Component({
   selector: 'app-contact-info',
-  imports: [CommonModule,NgOptimizedImage,RouterModule],
+  imports: [CommonModule,NgOptimizedImage,RouterModule,MatButtonModule,MatIconModule,MatChipsModule],
   templateUrl: './contact-info.component.html',
   styleUrl: './contact-info.component.scss'
 })
@@ -21,13 +25,13 @@ export class ContactInfoComponent {
   currentGroups = computed(()=> this.groupsService.groups.value()?.filter(grupo => this.contact.value()?.groupIds.includes(grupo.id)))
   router = inject(Router);
 
-  contact:ResourceRef<Contact> = resource({
+  contact:ResourceRef<Contact | undefined> = resource({
       request: ()=>  ({contactId: this.id()}),
       loader: async({request})=> {
         const res = await this.contactsService.getById(request.contactId)
         if(res.success && res.data) return res.data;
         this.snackBarService.openSnackbarError(res.message);
-        return {...CONTACTO_VACIO}
+        return
       }
     })
 
@@ -54,7 +58,7 @@ export class ContactInfoComponent {
       }
     }
 
-    async addToGroup(groupId:number){
+    async toggleGroup(groupId:number){
       const res = await this.groupsService.toogleContactOnGroup(this.contact.value()!.id,groupId);
       this.contact.reload();
     }
