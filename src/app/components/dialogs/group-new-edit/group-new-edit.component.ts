@@ -3,13 +3,15 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
-import { SnackBarService } from '../../services/snack-bar.service';
-import { GroupsService } from '../../services/groups.service';
-import { Group, GRUPO_VACIO, NewGroup } from '../../interfaces/group';
+import { SnackBarService } from '../../../services/snack-bar.service';
+import { GroupsService } from '../../../services/groups.service';
+import { Group, GRUPO_VACIO, NewGroup } from '../../../interfaces/group';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-group-new-edit',
-  imports: [ReactiveFormsModule,MatFormFieldModule,MatInputModule,MatInputModule],
+  imports: [ReactiveFormsModule,MatFormFieldModule,MatInputModule,MatInputModule,MatDialogModule, MatButtonModule],
   templateUrl: './group-new-edit.component.html',
   styleUrl: './group-new-edit.component.scss'
 })
@@ -17,10 +19,12 @@ export class GroupNewEditComponent {
   groupsService = inject(GroupsService);
   router = inject(Router);
   snackBarService = inject(SnackBarService)
-
+  readonly dialogRef = inject(MatDialogRef<GroupNewEditComponent>);
+  data = inject(MAT_DIALOG_DATA);
 
   id = input<number>();
-  group = computed(()=> {
+  group = computed<Group>(()=> {
+    if(this.data) return this.data;
     if(!this.id()) return undefined;
     return this.groupsService.groups.value()?.find(group => group.id == this.id())
   });
@@ -35,14 +39,14 @@ export class GroupNewEditComponent {
     const group:NewGroup | Group = this.group() || GRUPO_VACIO; 
     group.name = this.form.controls.name.value || '';
     group.description = this.form.controls.description.value || '';
-    if(!this.id()){
+    if(!this.group() || !this.group().id){
       //Creación de grupo
       const res = await this.groupsService.createGroup(group);
       if(res.success && res.data) {
         //Éxito creando grupo
         this.snackBarService.openSnackbarSuccess(res.message);
-        this.groupsService.groups.update((previous)=>  [... (previous || []),res.data!]);
-        // this.router.navigate(['/contacts',res.data.id]);
+        this.router.navigate(['/groups',res.data.id]);
+        if(this.dialogRef) this.dialogRef.close(true);
       }
       else {
         //Error creando grupo
@@ -55,6 +59,8 @@ export class GroupNewEditComponent {
         //Éxito editando grupo
         this.snackBarService.openSnackbarSuccess(res.message);
         this.groupsService.updateLocalGroup(res.data);
+        if(this.dialogRef) this.dialogRef.close(true);
+        return
       }
       //Error editando grupo
       this.snackBarService.openSnackbarError(res.message);

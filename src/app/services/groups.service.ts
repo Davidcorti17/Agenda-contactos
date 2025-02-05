@@ -50,10 +50,15 @@ export class GroupsService extends ApiService {
     }
   }
   
+  /** Obtiene datos de un grupo de la memoria local */
+  getByIdLocal(groupId:number):Group|undefined {
+    return this.groups.value()!.find(group => group.id === groupId);
+  }
+
   /** Obtener un sólo grupo desde su ID */
   async getById(groupId:number):Promise<ResponseData<Group|null>> {
     if(this.groups.hasValue()){
-      const groupLocal = this.groups.value()!.find(group => group.id === groupId);
+      const groupLocal = this.getByIdLocal(groupId);
       if(groupLocal) return {
         success: true,
         message: "Grupo encontrado con información local",
@@ -110,7 +115,7 @@ export class GroupsService extends ApiService {
   /** Edita datos de un grupo en el backend */
   async updateGroup(group:Group):Promise<ResponseData<Group>>{
     const groupPostDto:GroupPostDto = groupToGroupPostDto(group);
-    const res = await this.put(this.resource,groupPostDto);
+    const res = await this.put(this.resource+"/"+group.id,groupPostDto);
     if(!res || !res.ok){
       return {
         success: false,

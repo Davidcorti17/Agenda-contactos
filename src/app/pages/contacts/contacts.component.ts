@@ -1,25 +1,39 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { ContactsService } from '../../services/contacts.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { GroupsService } from '../../services/groups.service';
-import { ContactSummaryComponent } from "../../components/contact-summary/contact-summary.component";
 import { MatButtonModule } from '@angular/material/button';
+import { ContactsTableComponent } from "../../components/contacts-table/contacts-table.component";
+import { TitleService } from '../../title.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { ContactNewEditComponent } from '../../components/dialogs/contact-new-edit/contact-new-edit.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-contactos',
-  imports: [CommonModule, RouterModule, ContactSummaryComponent,MatButtonModule],
+  imports: [CommonModule, RouterModule, MatButtonModule, ContactsTableComponent,MatIconModule,MatTooltip],
   templateUrl: './contacts.component.html',
-  styleUrl: './contacts.component.scss'
+  styleUrl: './contacts.component.scss',
+  host: {height: "100%",
+    "background-color":"red"}
 })
-export class ContactsComponent{
+export class ContactsComponent implements OnInit{
+
   authService = inject(AuthService);
   contactsService = inject(ContactsService);
   groupsService = inject(GroupsService);
+  readonly titleService = inject(TitleService);
+  dialog = inject(MatDialog);
+  
+  ngOnInit(): void {
+    this.titleService.title.set("Agenda");
+  }
 
-  async exportContacts(){
-    this.contactsService.export();
+  showDialogNewContact(){
+      this.dialog.open(ContactNewEditComponent)
   }
   
 }

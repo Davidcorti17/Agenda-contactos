@@ -18,8 +18,30 @@ html {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+p {margin: 0;}
 
 .flex-apart{
   display: flex;
   justify-content: space-between;
+}
+
+.flex-column{
+  display: flex !important;
+  flex-direction: column;
+}
+
+.error{
+  @include mat.button-overrides((
+    // text-ripple-color: var(--mat-sys-error-container),
+    text-label-text-color: var(--mat-sys-error),
+    ));
+}
+
+.tertiary{
+  @include mat.button-overrides((
+    text-label-text-color: var(--mat-sys-tertiary),
+    ));
+  @include mat.fab-overrides((
+    container-color: var(--mat-sys-tertiary-container),
+    ));
 }

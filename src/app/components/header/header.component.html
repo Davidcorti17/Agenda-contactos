@@ -1,6 +1,9 @@
-<header>
-  <a mat-button [routerLink]="['/contacts']" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Contactos</a>
-  <a mat-button [routerLink]="['/groups']" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Grupos</a>
-  <p>{{authService.user()?.email}}</p>
-  <button mat-button (click)="authService.logout()">Logout</button>
-</header>
+<mat-toolbar>
+  <button mat-icon-button aria-label="Toggle menu" (click)="toggleSidebar.emit()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>{{titleService.title()}}</span>
+</mat-toolbar>
+
+
+

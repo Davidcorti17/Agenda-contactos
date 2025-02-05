@@ -1,62 +1,83 @@
 @if(contact.error()){
   <p>Contacto no encontrado</p>
 } @else {
-  <h2>
-    {{contact.value()?.firstName | titlecase}} {{contact.value()?.lastName  | titlecase}}
-  </h2>
-  @if(contact.value()?.imageUrl){
-    <img ngSrc="{{contact.value()?.imageUrl || 'images/placeholder_contact.jpeg'}}"  width="200" height="200">
-  }
-  @if(contact.value()?.phone){
-    <a href="tel:{{contact.value()?.phone}}">
-      <mat-icon fontIcon="call"/> {{contact.value()?.phone}}
-    </a>
-  }
-  @if(contact.value()?.address){
-    <a href="https://maps.google.com/{{contact.value()?.address}}">
-      <mat-icon fontIcon="home"/>{{contact.value()?.address}}
-    </a>
-  }
-  @if(contact.value()?.email){
-    <a href="mailto:{{contact.value()?.email}}">
-      <mat-icon fontIcon="contact_mail"/>{{contact.value()?.email}}
-    </a>
-  }
-  <p>{{contact.value()?.description}}</p>
-  <p>{{contact.value()?.company}}</p>
-  
-  <button mat-button [routerLink]="['edit']">Edit</button>
-
-  <button mat-icon-button (click)="toggleFavorite()">
-    @if(contact.value()?.isFavorite){
-      <mat-icon fontIcon="star"/>
-    } @else {
-      <mat-icon fontIcon="bookmark_star"/>
-    }
-    <p>
-  </button>
-
-  <p>Grupos:</p>
-  <ul>
-    @for(group of currentGroups(); track group.id){
-      <mat-chip [routerLink]="['/groups',group.id]">{{group.name}}</mat-chip>
-    }
-    @empty {
-      <p>El contacto no se encuentra en ningún grupo</p>
-    }
-  </ul>
-  
-  <button mat-button (click)="delete()">Eliminar contacto</button>
-  
-  
-  <h3>Grupos</h3>
-  @for(group of groupsService.groups.value(); track group.id){
-    <p>{{group.name}} <button mat-button (click)="toggleGroup(group.id)">
-      @if(currentGroups()?.includes(group)){
-        Sacar del grupo
-      } @else {
-        Agregar al grupo
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        Datos de contacto
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      @if(contact.value()?.imageUrl){
+        <img ngSrc="{{contact.value()?.imageUrl || 'images/placeholder_contact.png'}}"  width="200" height="200">
       }
-    </button></p>
-  }
+      <div id="right">
+
+        @if(contact.value()?.phone){
+          <mat-icon fontIcon="call"/>
+          <a href="tel:{{contact.value()?.phone}}">
+             {{contact.value()?.phone}}
+          </a>
+        }
+        @if(contact.value()?.address){
+          <mat-icon fontIcon="home"/>
+          <a href="https://maps.google.com/{{contact.value()?.address}}">
+            {{contact.value()?.address}}
+          </a>
+        }
+        @if(contact.value()?.email){
+          <mat-icon fontIcon="contact_mail"/>
+          <a href="mailto:{{contact.value()?.email}}">
+            {{contact.value()?.email}}
+          </a>
+        }
+        @if(contact.value()?.company){
+          <mat-icon fontIcon="store"/>
+          <p>{{contact.value()?.company}}</p>
+        }
+        @if(contact.value()?.description){
+          <mat-icon fontIcon="info"/>
+          <p>{{contact.value()?.description}}</p>
+        }
+        
+        <button mat-icon-button (click)="toggleFavorite()" id="favorite"
+          [matTooltip]="contact.value()?.isFavorite ? 'Eliminar de favoritos' : 'Agregar a favoritos'">
+          <mat-icon fontIcon="star" [class.active]="contact.value()?.isFavorite"/>
+        </button>
+        </div>
+        </mat-card-content>
+    </mat-card>
+
+  <button mat-button (click)="showEditDialog()"><mat-icon>edit</mat-icon>Editar</button>
+  <button mat-button (click)="showDeleteDialog()"><mat-icon>delete</mat-icon>Eliminar</button>  
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        Grupos
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <button mat-button [matMenuTriggerFor]="menu">
+        <mat-icon>edit</mat-icon>
+        Agregar o eliminar de grupos</button>
+        <mat-menu #menu="matMenu">
+          @for(group of groupsService.groups.value(); track group.id){
+            <button mat-menu-item [class.active]="currentGroups()?.includes(group)" (click)="toggleGroup(group.id)">{{group.name}}
+              @if(currentGroups()?.includes(group)){
+               <mat-icon>checkbox</mat-icon>
+              }
+            </button>
+          }
+      </mat-menu>
+      @for(group of currentGroups(); track group.id){
+        <mat-chip [routerLink]="['/groups',group.id]">{{group.name}}</mat-chip>
+      }
+      @empty {
+        <p>El contacto no se encuentra en ningún grupo</p>
+      }
+    </mat-card-content>
+  </mat-card>
+
+    
 }

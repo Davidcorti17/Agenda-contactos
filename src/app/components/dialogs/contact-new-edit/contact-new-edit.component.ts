@@ -1,27 +1,31 @@
 import { Component, computed, effect, inject, input } from '@angular/core';
-import { ContactsService } from '../../services/contacts.service';
+import { ContactsService } from '../../../services/contacts.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Contact, ContactNew, CONTACTO_NUEVO_VACIO } from '../../interfaces/contact';
+import { Contact, ContactNew, CONTACTO_NUEVO_VACIO } from '../../../interfaces/contact';
 import { Router } from '@angular/router';
-import { SnackBarService } from '../../services/snack-bar.service';
+import { SnackBarService } from '../../../services/snack-bar.service';
 import { MatButtonModule } from '@angular/material/button';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-contact-new-edit',
-  imports: [ReactiveFormsModule,MatFormFieldModule,MatInputModule,MatButtonModule],
+  imports: [ReactiveFormsModule,MatFormFieldModule,MatInputModule,MatButtonModule,MatDialogModule],
   templateUrl: './contact-new-edit.component.html',
-  styleUrl: './contact-new-edit.component.scss'
+  styleUrl: './contact-new-edit.component.scss',
 })
 export class ContactNewEditComponent {
   contactsService = inject(ContactsService);
   router = inject(Router);
   snackBarService = inject(SnackBarService)
+  readonly dialogRef = inject(MatDialogRef<ContactNewEditComponent>);
+  data = inject(MAT_DIALOG_DATA);
 
 
   id = input<number>();
   contact = computed(()=> {
+    if(this.data) return this.data;
     if(!this.id()) return undefined;
     return this.contactsService.contacts.value()?.find(contact => contact.id == this.id())
   });
@@ -51,6 +55,7 @@ export class ContactNewEditComponent {
         //Éxito creando contacto
         this.snackBarService.openSnackbarSuccess(res.message);
         this.router.navigate(['/contacts',res.data.id]);
+        if (this.dialogRef) this.dialogRef.close()
       }
       else {
         //Error creando contacto
@@ -62,10 +67,13 @@ export class ContactNewEditComponent {
       if(res.success && res.data){
         //Éxito editando contacto
         this.snackBarService.openSnackbarSuccess(res.message);
+        if (this.dialogRef) this.dialogRef.close()
+      } else {
+        //Error editando contacto
+        this.snackBarService.openSnackbarError(res.message);
       }
-      //Error editando contacto
-      this.snackBarService.openSnackbarError(res.message);
     }
+    this.dialogRef?.close()
   }
 
   form = new FormGroup({

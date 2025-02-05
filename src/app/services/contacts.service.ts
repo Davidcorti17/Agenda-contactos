@@ -111,7 +111,7 @@ export class ContactsService extends ApiService {
   /** Edita datos de un contacto */
   async updateContact(contact:Contact):Promise<ResponseData<Contact>>{
     const contactPostDto:ContactPostDto = contactToContactPostDto(contact);
-    const res = await this.put(this.resource,contactPostDto);
+    const res = await this.put(this.resource+"/"+contact.id,contactPostDto);
     if(!res || !res.ok){
       return {
         success: false,

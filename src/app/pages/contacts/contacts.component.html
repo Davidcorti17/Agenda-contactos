@@ -1,15 +1,4 @@
-<h1>Contactos</h1>
-
-@for (contact of contactsService.contacts.value(); track contact.id) {
-  <app-contact-summary [contact]=contact/>
-} @empty {
-  <p>No hay contactos</p>
-}
-@if(contactsService.contacts.isLoading()){
-  <p>Cargando</p>
-}
-<a mat-button [routerLink]="['/contacts/new']">Agregar</a>
-
-
-
-<button mat-button (click)="exportContacts()">Exportar contactos</button>
+<app-contacts-table [contacts]="contactsService.contacts.value()" [loading]="contactsService.contacts.isLoading()"/>
+<button mat-fab class="tertiary" matTooltip="Nuevo contacto" (click)="showDialogNewContact()">
+  <mat-icon>add</mat-icon>
+</button>

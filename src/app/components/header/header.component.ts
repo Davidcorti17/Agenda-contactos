@@ -1,15 +1,18 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { AuthService } from '../../services/auth.service';
 import { RouterModule } from '@angular/router';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { TitleService } from '../../title.service';
+
 
 @Component({
   selector: 'app-header',
-  imports: [MatButtonModule,RouterModule],
+  imports: [MatButtonModule,RouterModule, MatToolbarModule, MatIconModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-  authService = inject(AuthService);
-
+  readonly titleService = inject(TitleService);
+  toggleSidebar = output();
 }
