@@ -53,7 +53,7 @@ export class GroupsService extends ApiService {
   /** Obtener un sólo grupo desde su ID */
   async getById(groupId:number):Promise<ResponseData<Group|null>> {
     if(this.groups.hasValue()){
-      const groupLocal = this.groups.value()!.find(group => group.id === group.id);
+      const groupLocal = this.groups.value()!.find(group => group.id === groupId);
       if(groupLocal) return {
         success: true,
         message: "Grupo encontrado con información local",
