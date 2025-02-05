@@ -7,10 +7,11 @@ import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { LoginData } from '../../interfaces/login';
 import { SnackBarService } from '../../services/snack-bar.service';
+import { MatCard } from '@angular/material/card';
 
 @Component({
   selector: 'app-login',
-  imports: [RouterModule, MatInputModule,MatFormFieldModule,MatButtonModule,FormsModule],
+  imports: [RouterModule, MatInputModule,MatFormFieldModule,MatButtonModule,FormsModule,MatCard],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
