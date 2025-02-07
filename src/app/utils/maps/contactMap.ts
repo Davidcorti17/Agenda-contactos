@@ -1,6 +1,6 @@
-import { Contact, ContactGetDto, ContactNew, ContactPostDto } from "../../interfaces/contact";
+import { Contact, ContactGetDto, NewContact, ContactPostDto } from "../../interfaces/contact";
 
-export function contactToContactPostDto(contact:Contact|ContactNew):ContactPostDto{
+export function contactToContactPostDto(contact:Contact|NewContact):ContactPostDto{
   const newContact : ContactPostDto = {
     FirstName: contact.firstName,
     LastName: contact.lastName,

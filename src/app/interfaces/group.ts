@@ -1,15 +1,14 @@
 import { Contact, ContactGetDto } from "./contact"
 
 /** Nuevo grupo de contactos */
-export interface NewGroup {
-  name: string,
-  description?: string,
-}
+export type NewGroup = Omit<Group, "id" | "contacts">
 
 /** Grupo de contactos */
-export interface Group extends NewGroup{
+export interface Group{
   id: number,
   contacts: Contact[]
+  name: string,
+  description?: string,
 }
 
 /** Grupo de contactos según el back */

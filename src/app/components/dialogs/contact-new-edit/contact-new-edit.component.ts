@@ -3,7 +3,7 @@ import { ContactsService } from '../../../services/contacts.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Contact, ContactNew, CONTACTO_NUEVO_VACIO } from '../../../interfaces/contact';
+import { Contact, NewContact, CONTACTO_NUEVO_VACIO } from '../../../interfaces/contact';
 import { Router } from '@angular/router';
 import { SnackBarService } from '../../../services/snack-bar.service';
 import { MatButtonModule } from '@angular/material/button';
@@ -39,7 +39,7 @@ export class ContactNewEditComponent {
   })
 
   async save(){
-    const contact:ContactNew = this.contact() || {...CONTACTO_NUEVO_VACIO}; 
+    const contact:NewContact|Contact = this.contact() || {...CONTACTO_NUEVO_VACIO}; 
     contact.firstName = this.form.controls.firstName.value || '';
     contact.lastName = this.form.controls.lastName.value || '';
     contact.phone = this.form.controls.phone.value || '';
@@ -48,7 +48,7 @@ export class ContactNewEditComponent {
     contact.address = this.form.controls.address.value || '';
     contact.email = this.form.controls.email.value || '';
     contact.imageUrl = this.form.controls.imageUrl.value || '';
-    if(!contact.id){
+    if(!(contact as Contact).id){
       //Creación de contacto
       const res = await this.contactsService.createContact(contact);
       if(res.success && res.data) {

@@ -1,6 +1,6 @@
 import { inject, Injectable, resource, ResourceRef } from '@angular/core';
 import { ApiService } from './api.service';
-import { Contact, ContactNew, ContactGetDto, ContactPostDto } from '../interfaces/contact';
+import { Contact, NewContact, ContactGetDto, ContactPostDto } from '../interfaces/contact';
 import { ResponseData } from '../interfaces/responses';
 import { AuthService } from './auth.service';
 import { SnackBarService } from './snack-bar.service';
@@ -83,7 +83,7 @@ export class ContactsService extends ApiService {
   }
 
   /** Crea un nuevo contacto */
-  async createContact(contact:ContactNew):Promise<ResponseData<Contact>>{
+  async createContact(contact:NewContact):Promise<ResponseData<Contact>>{
     const contactPostDto:ContactPostDto = contactToContactPostDto(contact);
     const res = await this.post(this.resource,contactPostDto);
     if(!res || !res.ok){

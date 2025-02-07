@@ -1,12 +1,7 @@
-export interface Contact extends ContactNew {
+export interface Contact{
   id: number,
   isFavorite?: boolean
   groupIds: number[]
-}
-
-/** Contacto nuevo o contacto editado */
-export interface ContactNew {
-  id?: number,
   firstName: string,
   lastName: string,
   phone: string,
@@ -16,6 +11,9 @@ export interface ContactNew {
   company?: string,
   description?: string,
 }
+
+/** Contacto nuevo o contacto editado */
+export type NewContact = Omit<Contact,"id" |"isFavorite" | "groupIds">;
 
 /** Un contacto como lo ve el backend */
 export interface ContactGetDto {
@@ -46,7 +44,7 @@ export interface ContactPostDto {
 }
 
 /** Contacto nuevo ejemplo */
-export const CONTACTO_NUEVO_VACIO:ContactNew = {
+export const CONTACTO_NUEVO_VACIO:NewContact = {
   firstName: "",
   lastName: "",
   phone: "",
