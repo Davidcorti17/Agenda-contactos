@@ -16,6 +16,7 @@ export class GroupsService extends ApiService {
   readonly resource = "Groups";
   contactsService = inject(ContactsService);
 
+  /** Recurso con todos los grupos de un usuario */
   groups:ResourceRef<Group[]> = resource({
     request: ()=> ({token: this.authService.token()}),
     loader: async({request})=> {

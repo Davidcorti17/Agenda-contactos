@@ -26,8 +26,7 @@ export interface GroupPostDto {
   Description?: string;
 }
 
-export const GRUPO_NUEVO_VACIO: NewGroup = {name:""};
-
+/** Grupo de ejemplo sin datos */
 export const GRUPO_VACIO: Group = {
   name: "",
   id: 0,

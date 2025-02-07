@@ -26,7 +26,7 @@ export class LoggedComponent implements OnInit {
   dialog = inject(MatDialog);
   contactsService = inject(ContactsService);
   router = inject(Router);
-  activatedRoute = inject(ActivatedRoute)
+  activatedRoute = inject(ActivatedRoute);
 
   ngOnInit(): void {
     //Escucho eventos de navigationEnd para ver si estoy dentro de la pantalla de un contacto
@@ -60,5 +60,6 @@ export class LoggedComponent implements OnInit {
     else this.showExport.set(true)
   }
   
+  /** Dice si mostramos el botón de exportar o no */
   showExport = signal(true);
 }

@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { GroupsService } from '../../services/groups.service';
 import { MatButtonModule } from '@angular/material/button';
 import { ContactsTableComponent } from "../../components/contacts-table/contacts-table.component";
-import { TitleService } from '../../title.service';
+import { TitleService } from '../../services/title.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { ContactNewEditComponent } from '../../components/dialogs/contact-new-edit/contact-new-edit.component';

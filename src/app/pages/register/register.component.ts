@@ -19,6 +19,7 @@ export class RegisterComponent {
   snackBarService = inject(SnackBarService)
   router = inject(Router);
 
+  /** Intenta registrar al usuario en el back */
   async register(){
     const registerData : RegisterData = {
       username: '',
@@ -34,6 +35,7 @@ export class RegisterComponent {
     }
   }
 
+  /** Datos de formulario de registro */
   form = new FormGroup({
     username: new FormControl('',Validators.required),
     password: new FormControl(''),

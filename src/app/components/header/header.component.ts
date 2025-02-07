@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
-import { TitleService } from '../../title.service';
+import { TitleService } from '../../services/title.service';
 
 
 @Component({

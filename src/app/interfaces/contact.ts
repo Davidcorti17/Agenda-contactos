@@ -1,3 +1,4 @@
+/** Datos de contacto */
 export interface Contact{
   id: number,
   isFavorite?: boolean
@@ -43,13 +44,14 @@ export interface ContactPostDto {
   Description?: string
 }
 
-/** Contacto nuevo ejemplo */
+/** Contacto nuevo de ejemplo sin datos */
 export const CONTACTO_NUEVO_VACIO:NewContact = {
   firstName: "",
   lastName: "",
   phone: "",
 }
 
+/** Contacto de ejemplo sin datos */
 export const CONTACTO_VACIO:Contact = {
   ...CONTACTO_NUEVO_VACIO,
   groupIds: [],

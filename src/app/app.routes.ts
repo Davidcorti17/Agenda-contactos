@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { onlyGuestGuard } from './guards/only-guest.guard';
 import { onlyUserGuard } from './guards/only-user.guard';
 
+/** Lista de rutas que nuestra aplicación conoce */
 export const routes: Routes = [{
     path: "login",
     loadComponent: ()=> import("./pages/login/login.component").then(c => c.LoginComponent),
@@ -21,7 +22,7 @@ export const routes: Routes = [{
   },
   {
     path: "",
-    loadComponent: ()=> import("./templates/logged/logged.component").then(c => c.LoggedComponent),
+    loadComponent: ()=> import("./layouts/logged/logged.component").then(c => c.LoggedComponent),
     canActivate: [onlyUserGuard],
     children: [
       {

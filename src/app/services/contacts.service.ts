@@ -15,6 +15,7 @@ export class ContactsService extends ApiService {
   snackbarService = inject(SnackBarService);
   readonly resource = "Contacts";
 
+  /** Recurso con todos los contactos de un usuario */
   contacts:ResourceRef<Contact[]> = resource({
     request: ()=>  ({token: this.authService.token()}),
     loader: async({request})=> {
@@ -163,6 +164,7 @@ export class ContactsService extends ApiService {
     this.contacts.value.set(this.sortContacts(contactosEditados));
   }
 
+  /** Ordena los contactos según si es favorito y por orden alfabético */
   sortContacts(contacts:Contact[]){
     return contacts.sort((a,b)=> (a.isFavorite ? -1 : 1 ) -  (b.isFavorite ? -1 : 1 ) || a.lastName.localeCompare(b.lastName));
   }

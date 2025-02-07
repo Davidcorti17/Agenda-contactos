@@ -20,6 +20,7 @@ export class LoginComponent {
   router = inject(Router);
   snackBarService = inject(SnackBarService)
 
+  /** Intenta loguear al usuario con el back */
   async login(form:LoginData){
     if(!form.email) return;
     if(!form.password) return;

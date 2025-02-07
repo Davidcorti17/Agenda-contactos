@@ -6,7 +6,6 @@ import { UserPostRes, User } from '../interfaces/usuario';
 import { Router } from '@angular/router';
 import { ResponseData } from '../interfaces/responses';
 import { decodeToken } from '../utils/token';
-import { UsersService } from './users.service';
 import { TokenClaims } from '../interfaces/token';
 
 @Injectable({
@@ -15,7 +14,6 @@ import { TokenClaims } from '../interfaces/token';
 export class AuthService extends ApiService {
 
   router = inject(Router);
-  userService = inject(UsersService);
   logoutTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(){

@@ -4,7 +4,7 @@ import { GroupsService } from '../../services/groups.service';
 import { SnackBarService } from '../../services/snack-bar.service';
 import { CommonModule } from '@angular/common';
 import { ContactsTableComponent } from "../../components/contacts-table/contacts-table.component";
-import { TitleService } from '../../title.service';
+import { TitleService } from '../../services/title.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Dialog } from '@angular/cdk/dialog';

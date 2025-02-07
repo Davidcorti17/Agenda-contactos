@@ -24,17 +24,13 @@ export class ContactSummaryComponent {
   readonly dialog = inject(MatDialog);
   contactService = inject(ContactsService);
 
-  goToContact(){
-    this.router.navigate(['/contacts',this.contact().id]);
-  }
-
   showEditDialog(e:Event){
-    e.stopPropagation();
+    e.stopPropagation(); // Permite que el click que hice no afecte otros elementos clickeables que estén en la misma posición que este elemento.
     this.dialog.open(ContactNewEditComponent,{data:this.contact()})
   }
 
   showDeleteDialog(e:Event){
-    e.stopPropagation();
+    e.stopPropagation(); // Permite que el click que hice no afecte otros elementos clickeables que estén en la misma posición que este elemento.
     this.dialog.open(DeleteComponent,{data:{resource:"contacto"}}).afterClosed().subscribe(res => {
       if(res) this.contactService.deleteContact(this.contact().id);
     })

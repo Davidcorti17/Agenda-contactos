@@ -1,3 +1,4 @@
+/** Claims encontrados en el token de autenticación */
 export interface TokenClaims {
   aud: string;
   /** Vencimiento token */

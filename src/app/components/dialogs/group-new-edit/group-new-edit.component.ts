@@ -22,10 +22,13 @@ export class GroupNewEditComponent {
   readonly dialogRef = inject(MatDialogRef<GroupNewEditComponent>);
   data = inject(MAT_DIALOG_DATA);
 
+  /** Input de ID, se utiliza cuando entramos a este componente con parámetros de ruta para editar un contacto */
   id = input<number>();
+
+  /** Contiene el grupo a editar */
   group = computed<Group>(()=> {
-    if(this.data) return this.data;
-    if(!this.id()) return undefined;
+    if(this.data) return this.data; //En caso de abrir este componente como un modal
+    if(!this.id()) return undefined; //En caso de abrir este componente como una ruta
     return this.groupsService.groups.value()?.find(group => group.id == this.id())
   });
   precompletarFormulario = effect(()=> {
@@ -35,6 +38,7 @@ export class GroupNewEditComponent {
     }
   })
 
+  /** Guarda los cambios */
   async save(){
     const group:NewGroup | Group = this.group() || GRUPO_VACIO; 
     group.name = this.form.controls.name.value || '';
@@ -67,6 +71,7 @@ export class GroupNewEditComponent {
     }
   }
 
+  /** Datos del formulario de grupo */
   form = new FormGroup({
     name: new FormControl('',Validators.required),
     description: new FormControl(''),

@@ -8,7 +8,7 @@ import { GroupsService } from '../../services/groups.service';
 import { MatButtonModule } from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatChipsModule} from '@angular/material/chips';
-import { TitleService } from '../../title.service';
+import { TitleService } from '../../services/title.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatMenuModule} from '@angular/material/menu';

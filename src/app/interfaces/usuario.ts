@@ -1,3 +1,4 @@
+/** Datos de usuario */
 export interface User {
   email: string,
   firstName: string,
@@ -6,6 +7,7 @@ export interface User {
 
 export type State = "Active" | "Archived" | "Confirmed";
 
+/** User para enviar al backend */
 export interface UserPostDto{
   FirstName: string,
   LastName: string,
@@ -13,6 +15,7 @@ export interface UserPostDto{
   Email: string,
 }
 
+/** Respuesta del back de post/put un USER */
 export interface UserPostRes{
   Id: number,
   FirstName: string,
@@ -21,6 +24,7 @@ export interface UserPostRes{
   State: State,
 }
 
+/** User como viene del backend */
 export interface UserGetDto{
   Id: number,
   FirstName: string,

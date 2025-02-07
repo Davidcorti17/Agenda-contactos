@@ -9,7 +9,7 @@ import { LoadingService } from './loading.service';
 export class ApiService {
   loadingService = inject(LoadingService);
 
-  /** Realiza un get autenticado a nuestro backend */
+  /** Realiza un GET autenticado a nuestro backend */
   async get(URI:string){
     const token = localStorage.getItem("token");
     let headers:HeadersInit = {}
@@ -28,6 +28,7 @@ export class ApiService {
     }
   }
 
+  /** Realiza un POST autenticado a nuestro backend */
   async post(URI:string,body:any){
     if(typeof body !== "object" && typeof body !== "string") return;
     const token = localStorage.getItem("token");
@@ -48,6 +49,7 @@ export class ApiService {
     }
   }
 
+  /** Realiza un PUT autenticado a nuestro backend */
   async put(URI:string,body?:any){
     // if(typeof body !== "object" && typeof body !== "string") return;
     const token = localStorage.getItem("token");
@@ -69,6 +71,7 @@ export class ApiService {
     }
   }
 
+  /** Realiza un DELETE autenticado a nuestro backend */
   async delete(URI:string){
     const token = localStorage.getItem("token");
     let headers:HeadersInit = {}
@@ -86,15 +89,5 @@ export class ApiService {
       return null
     }
   }
-
-  // async decodeBody(res:Response, bodyFormat:RequestBodyFormat): Promise<object | string>{
-  //   switch (bodyFormat){
-  //     case 'json':
-  //       return await res.json();
-  //     case 'text':
-  //       return await res.text();
-  //   }
-
-  // }
   
 }
