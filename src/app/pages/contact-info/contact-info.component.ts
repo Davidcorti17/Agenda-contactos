@@ -1,6 +1,6 @@
 import { Component, computed, effect, inject, input, resource, ResourceRef } from '@angular/core';
 import { ContactsService } from '../../services/contacts.service';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { NgOptimizedImage } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { Contact, CONTACTO_VACIO } from '../../interfaces/contact';
 import { SnackBarService } from '../../services/snack-bar.service';
@@ -18,7 +18,7 @@ import { DeleteComponent } from '../../components/dialogs/delete/delete.componen
 
 @Component({
   selector: 'app-contact-info',
-  imports: [CommonModule,NgOptimizedImage,RouterModule,MatButtonModule,MatIconModule,MatChipsModule,MatCardModule,MatTooltipModule,MatMenuModule],
+  imports: [NgOptimizedImage, RouterModule, MatButtonModule, MatIconModule, MatChipsModule, MatCardModule, MatTooltipModule, MatMenuModule],
   templateUrl: './contact-info.component.html',
   styleUrl: './contact-info.component.scss'
 })
@@ -35,9 +35,9 @@ export class ContactInfoComponent {
 
   /** Datos del contacto actual */
   contact:ResourceRef<Contact | undefined> = resource({
-      request: ()=>  ({contactId: this.id()}),
-      loader: async({request})=> {
-        const res = await this.contactsService.getById(request.contactId)
+      params: ()=>  ({contactId: this.id()}),
+      loader: async({params})=> {
+        const res = await this.contactsService.getById(params.contactId)
         if(res.success && res.data) return res.data;
         this.snackBarService.openSnackbarError(res.message);
         return

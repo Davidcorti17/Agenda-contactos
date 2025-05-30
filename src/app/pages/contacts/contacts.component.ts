@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { ContactsService } from '../../services/contacts.service';
-import { CommonModule } from '@angular/common';
+
 import { RouterModule } from '@angular/router';
 import { GroupsService } from '../../services/groups.service';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,7 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-contactos',
-  imports: [CommonModule, RouterModule, MatButtonModule, ContactsTableComponent,MatIconModule,MatTooltip],
+  imports: [RouterModule, MatButtonModule, ContactsTableComponent, MatIconModule, MatTooltip],
   templateUrl: './contacts.component.html',
   styleUrl: './contacts.component.scss',
   host: {height: "100%",

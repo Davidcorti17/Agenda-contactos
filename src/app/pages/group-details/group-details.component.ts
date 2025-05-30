@@ -2,7 +2,7 @@ import { Component, effect, inject, input, resource, ResourceRef } from '@angula
 import { Group } from '../../interfaces/group';
 import { GroupsService } from '../../services/groups.service';
 import { SnackBarService } from '../../services/snack-bar.service';
-import { CommonModule } from '@angular/common';
+
 import { ContactsTableComponent } from "../../components/contacts-table/contacts-table.component";
 import { TitleService } from '../../services/title.service';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-group-details',
-  imports: [CommonModule, ContactsTableComponent,MatButtonModule, MatIconModule,MatCardModule],
+  imports: [ContactsTableComponent, MatButtonModule, MatIconModule, MatCardModule],
   templateUrl: './group-details.component.html',
   styleUrl: './group-details.component.scss'
 })
@@ -31,13 +31,13 @@ export class GroupDetailsComponent{
 
   /** Datos del grupo actual */
   group:ResourceRef<Group | undefined> = resource({
-    request: ()=>  ({groupId: this.id()}),
-    loader: async({request})=> {
-      const res = await this.groupsService.getById(request.groupId)
+    params: ()=>  ({groupId: this.id()}),
+    loader: async({params})=> {
+      const res = await this.groupsService.getById(params.groupId)
       if(res.success && res.data) return res.data;
       this.snackBarService.openSnackbarError(res.message);
       return
-    }
+    },
   })
 
   /** Cambia el título cuando cambian los datos del grupo */

@@ -17,14 +17,15 @@ export class ContactsService extends ApiService {
 
   /** Recurso con todos los contactos de un usuario */
   contacts:ResourceRef<Contact[]> = resource({
-    request: ()=>  ({token: this.authService.token()}),
-    loader: async({request})=> {
-      if(!request.token) return [];
+    params: ()=>  ({token: this.authService.token()}),
+    loader: async({params})=> {
+      if(!params.token) return [];
       const res = await this.getAll();
       if(res.success && res.data) return this.sortContacts(res.data);
       this.snackbarService.openSnackbarError(res.message);
       return [];
-    }
+    },
+    defaultValue: []
   })
 
   /** Obtiene todos los contactos de un usuario del backend */

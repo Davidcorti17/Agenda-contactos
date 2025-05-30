@@ -18,14 +18,15 @@ export class GroupsService extends ApiService {
 
   /** Recurso con todos los grupos de un usuario */
   groups:ResourceRef<Group[]> = resource({
-    request: ()=> ({token: this.authService.token()}),
-    loader: async({request})=> {
-      if(!request.token) return [];
+    params: ()=> ({token: this.authService.token()}),
+    loader: async({params})=> {
+      if(!params.token) return [];
       const res = await this.getAll();
       if(res.success && res.data) return res.data;
       this.snackbarService.openSnackbarError(res.message);
       return [];
-    }
+    },
+    defaultValue: []
   })
 
   /** Obtiene todos los grupos del backend */
