@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, input, resource, ResourceRef } fro
 import { ContactsService } from '../../services/contacts.service';
 import { NgOptimizedImage } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { Contact, CONTACTO_VACIO } from '../../interfaces/contact';
+import { Contact } from '../../interfaces/contact';
 import { SnackBarService } from '../../services/snack-bar.service';
 import { GroupsService } from '../../services/groups.service';
 import { MatButtonModule } from '@angular/material/button';

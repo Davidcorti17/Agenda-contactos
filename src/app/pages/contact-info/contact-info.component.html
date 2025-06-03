@@ -63,8 +63,8 @@
         Agregar o eliminar de grupos</button>
         <mat-menu #menu="matMenu">
           @for(group of groupsService.groups.value(); track group.id){
-            <button mat-menu-item [class.active]="currentGroups()?.includes(group)" (click)="toggleGroup(group.id)">{{group.name}}
-              @if(currentGroups()?.includes(group)){
+            <button mat-menu-item [class.active]="currentGroups().includes(group)" (click)="toggleGroup(group.id)">{{group.name}}
+              @if(currentGroups().includes(group)){
                <mat-icon>checkbox</mat-icon>
               }
             </button>
