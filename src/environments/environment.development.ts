@@ -2,5 +2,6 @@
  * Tienen que tener valores correspondientes a entornos localhost.
  */
 export const environment = {
-  API_URL: "https://localhost:53672/api/"
+  API_URL: "http://agenda-api.somee.com/api/"
+  // API_URL: "https://localhost:53672/api/"
 };
