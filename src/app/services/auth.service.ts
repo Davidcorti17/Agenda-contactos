@@ -92,9 +92,11 @@ export class AuthService extends ApiService {
 
   /** Crea un nuevo usuario */
   async register(registerData:RegisterData):Promise<ResponseData<User | undefined>>{
-    const params: LoginDto = {
-      UserName: registerData.username,
-      Password: registerData.password
+    const params: RegisterData = {
+      firstName: registerData.firstName,
+      lastName: registerData.lastName,
+      password: registerData.password,
+      email: registerData.email
     }
     const res = await this.post("authentication/authenticate", params)
     if(res && res.ok) {
