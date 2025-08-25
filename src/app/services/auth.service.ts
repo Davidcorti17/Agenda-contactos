@@ -98,7 +98,7 @@ export class AuthService extends ApiService {
       password: registerData.password,
       email: registerData.email
     }
-    const res = await this.post("authentication/authenticate", params)
+    const res = await this.post("Users", params)
     if(res && res.ok) {
       const resJson:UserPostRes = await res.json()
       if(!resJson.Id) return {
