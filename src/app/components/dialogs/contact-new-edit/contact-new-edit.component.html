@@ -7,27 +7,27 @@
   <mat-dialog-content>
     <mat-form-field>
       <mat-label>Nombre</mat-label>
-      <input matInput type="text" name="firstName" id="firstName" [autocomplete]="'name'" formControlName="firstName">
+      <input matInput type="text" name="firstName" id="firstName" autocomplete="given-name" formControlName="firstName">
     </mat-form-field>
     <mat-form-field>
       <mat-label>Apellido</mat-label>
-      <input matInput type="text" name="lastName" id="lastName" [autocomplete]="'lastName'" formControlName="lastName">
+      <input matInput type="text" name="lastName" id="lastName" autocomplete="family-name" formControlName="lastName">
     </mat-form-field>
     <mat-form-field>
       <mat-label>Teléfono</mat-label>
-      <input matInput type="text" name="phone" id="phone" [autocomplete]="'phone'" formControlName="phone">
+      <input matInput type="text" name="phone" id="phone" autocomplete="tel" formControlName="phone">
     </mat-form-field>
     <mat-form-field>
       <mat-label>Empresa</mat-label>
-      <input matInput type="text" name="company" id="company" [autocomplete]="'company'" formControlName="company">
+      <input matInput type="text" name="company" id="company" autocomplete="organization" formControlName="company">
     </mat-form-field>
     <mat-form-field>
       <mat-label>Dirección</mat-label>
-      <input matInput type="text" name="address" id="address" [autocomplete]="'address'" formControlName="address">
+      <input matInput type="text" name="address" id="address" autocomplete="address" formControlName="address">
     </mat-form-field>
     <mat-form-field>
       <mat-label>Correo electrónico</mat-label>
-      <input matInput type="email" name="email" id="email" [autocomplete]="'current-email'" formControlName="email">
+      <input matInput type="email" name="email" id="email" autocomplete="current-email" formControlName="email">
     </mat-form-field>
     <mat-form-field>
       <mat-label>Imagen (URL)</mat-label>

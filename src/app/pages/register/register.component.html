@@ -4,19 +4,19 @@
       <form (ngSubmit)="register()" [formGroup]="form" class="flex-column">
         <mat-form-field>
           <mat-label>Nombre</mat-label>
-          <input matInput type="text" name="firstName" id="firstName" formControlName="firstName">
+          <input matInput autocomplete="given-name" type="text" name="firstName" id="firstName" formControlName="firstName">
         </mat-form-field>
         <mat-form-field>
           <mat-label>Apellido</mat-label>
-          <input matInput type="text" name="lastName" id="lastName" formControlName="lastName">
+          <input matInput autocomplete="family-name" type="text" name="lastName" id="lastName" formControlName="lastName">
         </mat-form-field>
         <mat-form-field>
           <mat-label>Correo electrónico</mat-label>
-          <input matInput type="email" name="email" id="email" formControlName="email">
+          <input matInput autocomplete="email" type="email" name="email" id="email" formControlName="email">
         </mat-form-field>
         <mat-form-field>
           <mat-label>Contraseña</mat-label>
-          <input matInput type="password" name="password" id="password" formControlName="password">
+          <input matInput autocomplete="new-password" type="password" name="password" id="password" formControlName="password">
         </mat-form-field>
         <mat-form-field>
           <mat-label>Reescribí la contraseña</mat-label>
