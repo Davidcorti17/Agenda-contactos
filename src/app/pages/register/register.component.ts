@@ -8,7 +8,6 @@ import { RegisterData } from '../../interfaces/register';
 import { AuthService } from '../../services/auth.service';
 import { SnackBarService } from '../../services/snack-bar.service';
 import { MatCardModule } from '@angular/material/card';
-import { first } from 'rxjs';
 
 @Component({
   selector: 'app-register',

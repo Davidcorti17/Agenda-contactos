@@ -1,5 +1,5 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
-import { LoginData, LoginDto } from '../interfaces/login';
+import { LoginData } from '../interfaces/login';
 import { ApiService } from './api.service';
 import { RegisterData } from '../interfaces/register';
 import { UserPostRes, User } from '../interfaces/usuario';
@@ -101,7 +101,7 @@ export class AuthService extends ApiService {
     const res = await this.post("Users", params)
     if(res && res.ok) {
       const resJson:UserPostRes = await res.json()
-      if(!resJson.Id) return {
+      if(!resJson.id) return {
         success: false,
         message: "Error registrando usuario"
       }
